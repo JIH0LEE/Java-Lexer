@@ -1,67 +1,55 @@
 #Regex
 
-WHITESPACE="( '\n' | '\t' | 'bl')"
+WHITESPACE="( \n | \t | bl ) *"
 
 DIGIT="("
 for i in range(48,58):
     if i!=57:
-        DIGIT+=" '"+ chr(i)+ "' |"
+        DIGIT+=" "+ chr(i)+ " |"
     else:
-        DIGIT+=" '"+ chr(i)+"'"
+        DIGIT+=" "+ chr(i)
 DIGIT+=" )"
 
 
 LETTER="("
 for i in range(65,91):
     if i!=90:
-        LETTER+=" '"+ chr(i)+ "' |"
-        LETTER+=" '"+ chr(i+32)+ "' |"
+        LETTER+=" "+ chr(i)+ " |"
+        LETTER+=" "+ chr(i+32)+ " |"
     else:
-        LETTER+=" '"+ chr(i)+"' |"
-        LETTER+=" '"+ chr(i+32)+"'"
+        LETTER+=" "+ chr(i)+" |"
+        LETTER+=" "+ chr(i+32)
 LETTER+=" )"
 
 
-INT="'i' 'n' 't'"
-CHAR="'c' 'h' 'a' 'r'"
-BOOLEAN="'b' 'o' 'o' 'l' 'e' 'a' 'n'"
-STRING="'s' 't' 'r' 'i' 'n' 'g'"
-SIGNED_INTEGER="( '-' | 'eps' ) ( "+DIGIT+ " ) ( "+DIGIT+ " ) *"
-SINGLE_CHARACTER="''' ( "+LETTER+" ) '''"
-BOOLEAN_STRING="( 't' 'r' 'u' 'e' | 'f' 'a' 'l' 's' 'e')"
-LITERAL_STRING=' \'"\' ( '+LETTER+" | "+DIGIT+ ' | ) * \'"\' '
-IDENTIFIER="( "+LETTER+" | '_' ) ( "+LETTER+ " | "+DIGIT+" | '_' ) *" 
-IF="'i' 'f'"
-ELSE="'e' 'l' 's' 'e'"
-WHILE="'w' 'h' 'i' 'l' 'e'"
-CLASS="'c' 'l' 'a' 's' 'e'"
-RETURN="'r' 'e' 't' 'u' 'r' 'n'"
-ADD_OP="'+'"
+INT="i . n . t"
+CHAR="c . h . a . r"
+BOOLEAN="b . o . o . l . e . a . n"
+STRING="s . t . r . i . n . g"
+SIGNED_INTEGER="( - | eps ) . ( "+DIGIT+ " ) . ( "+DIGIT+ " ) *"
+SINGLE_CHARACTER="sq . ( "+LETTER+" ) . sq"
+BOOLEAN_STRING="( t . r . u . e | f . a . l . s . e)"
+LITERAL_STRING="dq . ( "+LETTER+" | "+DIGIT+"  | bl ) * . dq"
+IDENTIFIER="( "+LETTER+" | _ ) . ( "+LETTER+ " | "+DIGIT+" | _ ) . *" 
+IF="i . f"
+ELSE="e . l . s . e"
+WHILE="w . h . i . l . e"
+CLASS="c . l . a . s . s    "
+RETURN="r .e . t . u .r  .n"
+ADD_OP="+"
 SUB_OP="-"
-MUL_OP="'*'"
-DIV_OP="'/'"
-SEMI_COLON="';'"
-LPAREN="'('"
-RPAREM="')'"
-LBRACE="'{'"
-RBRACE="'}'"
-LBRACKET="'['"
-RBRACKET="']'"
-COMMA="','"
+MUL_OP="mul_op"
+DIV_OP="/"
+SEMI_COLON=";"
+LPAREN="lp"
+RPAREM="rp"
+LBRACE="{"
+RBRACE="}"
+LBRACKET="["
+RBRACKET="]"
+COMMA=","
 
-
-def beautiful_regex(regex_str):
-    rt_regex=""
-    lst=regex_str.split()
-    for i in lst:
-        if i=='|' or i=='(' or i==')':
-            rt_regex+=i
-        else:
-            rt_regex+=i.strip("'")
-    return rt_regex
-
-
-
+print(SINGLE_CHARACTER)
 class StackClass:
 
     def __init__(self, itemlist=[]):
@@ -125,70 +113,98 @@ def infixtopostfix(infixexpr):
     return return_lst
 
 
-postfix = infixtopostfix(DIGIT) 
-print(postfix)
+postfix = infixtopostfix(INT) 
+print(postfix)  
 
-# s=[];stack=[];start=0;end=1
+def make_input_symbol(postfix):
+    op_lst=['(',')','.','*','|']
+    input_symbol_lst=[]
+    for symbol in postfix:
+        if symbol not in op_lst:
+            input_symbol_lst.append(symbol) 
+    input_symbol_lst.append('eps')
+    return input_symbol_lst   
 
-# counter=-1;c1=0;c2=0
+regex=postfix
+keys=make_input_symbol(postfix)        
 
-# for i in regex:
-#     if i in keys:
-#         counter=counter+1;
-#         c1=counter;
-#         counter=counter+1;
-#         c2=counter;
-#         s.append({});
-#         s.append({})
-#         stack.append([c1,c2])
+s=[];stack=[];start=0;end=1
+
+counter=-1;c1=0;c2=0
+
+for i in regex:
+    if i in keys:
+        counter=counter+1
+        c1=counter
+        counter=counter+1
+        c2=counter
+        s.append({})
+        s.append({})
+        stack.append([c1,c2])
         
-#         s[c1][i]=c2
-#     elif i=='*':
-#         r1,r2=stack.pop()
-#         counter=counter+1;
-#         c1=counter;
-#         counter=counter+1;
-#         c2=counter;
-#         s.append({});
-#         s.append({})
-#         stack.append([c1,c2])
-#         s[r2]['e']=[r1,c2];s[c1]['e']=[r1,c2]
-#         if start==r1:
-#             start=c1 
-#         if end==r2:
-#             end=c2 
-#     elif i=='.':
-#         r11,r12=stack.pop()
-#         r21,r22=stack.pop()
-#         r12 = r11
-#         r11 = r22
-#         stack.append([r21,r12])
-#         elem = s[r12]
-#         del s[r12]
-#         for key in elem.keys():
-#             s[r11][key] = elem.get(key)-1
-#         counter = counter - 1
-#         if start==r11:
-#             start=r21 
-#         if end==r22:
-#             end=r12 
-#     else:
-#         counter=counter+1;
-#         c1=counter;
-#         counter=counter+1;
-#         c2=counter;
-#         s.append({});
-#         s.append({})
-#         r11,r12=stack.pop()
-#         r21,r22=stack.pop()
-#         stack.append([c1,c2])
-#         s[c1]['e']=[r21,r11]; s[r12]['e']=c2; s[r22]['e']=c2
-#         if start==r11 or start==r21:
-#             start=c1 
-#         if end==r22 or end==r12:
-#             end=c2
+        s[c1][i]=c2
+    elif i=='*':
+        r1,r2=stack.pop()
+        counter=counter+1
+        c1=counter
+        counter=counter+1
+        c2=counter
+        s.append({})
+        s.append({})
+        stack.append([c1,c2])
+        s[r2]['eps']=[r1,c2]
+        s[c1]['eps']=[r1,c2]
+        if start==r1:
+            start=c1 
+        if end==r2:
+            end=c2 
+    elif i=='.':
+        r11,r12=stack.pop()
+        r21,r22=stack.pop()
+        r12 = r11
+        r11 = r22
+        stack.append([r21,r12])
+        elem = s[r12]
+        del s[r12]
+        for key in elem.keys():
+            s[r11][key] = elem.get(key)-1
+        counter = counter - 1
+        if start==r11:
+            start=r21 
+        if end==r22:
+            end=r12 
+    else:
+        counter=counter+1
+        c1=counter
+        counter=counter+1
+        c2=counter
+        s.append({})
+        s.append({})
+        r11,r12=stack.pop()
+        r21,r22=stack.pop()
+        stack.append([c1,c2])
+        s[c1]['eps']=[r21,r11]
+        s[r12]['eps']=c2
+        s[r22]['eps']=c2
+        if start==r11 or start==r21:
+            start=c1 
+        if end==r22 or end==r12:
+            end=c2
 
-# print(keys)
-# print(start)
-# print(end)
-# print(s)
+print(keys)
+print(start)
+print(end)
+print(s)
+import pandas as pd
+import numpy as np
+
+arr_mat = np.full((end + 1, len(keys)), [-1])
+df_trans = pd.DataFrame(arr_mat, columns = keys, index = range(0, end+1), dtype = 'object')
+#print(df_trans)
+i = 0   
+for elem in s:
+    for key, value in elem.items():
+        #print(key, value)
+        df_trans.at[i,key]=value
+    i = i+1
+print(df_trans)
