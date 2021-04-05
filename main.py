@@ -30,12 +30,12 @@ SIGNED_INTEGER="( - | eps ) . ( "+DIGIT+ " ) . ( "+DIGIT+ " ) *"
 SINGLE_CHARACTER="sq . ( "+LETTER+" ) . sq"
 BOOLEAN_STRING="( t . r . u . e ) | ( f . a . l . s . e )"
 LITERAL_STRING="dq . ( "+LETTER+" | "+DIGIT+"  | bl ) * . dq"
-IDENTIFIER="( "+LETTER+" | _ ) . ( "+LETTER+ " | "+DIGIT+" | _ ) . *" 
+IDENTIFIER="( "+LETTER+" | _ ) . ( "+LETTER+ " | "+DIGIT+" | _ ) *" 
 IF="i . f"
 ELSE="e . l . s . e"
 WHILE="w . h . i . l . e"
 CLASS="c . l . a . s . s    "
-RETURN="r .e . t . u .r  .n"
+RETURN="r .e . t . u . r  .n"
 ADD_OP="+"
 SUB_OP="-"
 MUL_OP="mul_op"
@@ -165,18 +165,41 @@ class NFA:
             elif i=='.':
                 state1_1,state1_2=stack.pop()
                 state2_1,state2_2=stack.pop()
-                state1_2 = state1_1
-                state1_1 = state2_2
                 stack.append([state2_1,state1_2])
-                elem = table[state1_2]
-                del table[state1_2]
-                for key in elem.keys():
-                    table[state1_1][key] = elem.get(key)-1
-                state_num = state_num - 1
+                table[state2_2]['eps']=state1_1
+                
                 if self.__start_state==state1_1:
                     self.__start_state=state2_1 
                 if self.__end_state==state2_2:
                     self.__end_state=state1_2 
+            # elif i=='.':
+            #     state1_1,state1_2=stack.pop()
+            #     state2_1,state2_2=stack.pop()
+            #     delete_state=state1_2
+            #     state1_2 = state1_1
+            #     state1_1 = state2_2
+            #     stack.append([state2_1,state1_2])
+            #     elem = table[state1_2]
+            #     del table[state1_2]
+            #     print('endstate:',self.__end_state)
+            #     for key in elem.keys():
+             
+                    
+            #         if isinstance(elem.get(key),list):
+            #             temp=[]
+            #             for i in elem.get(key):
+            #                 if i ==delete_state:
+            #                     temp.append(i-1)
+            #                 else:
+            #                     temp.append(i)
+            #             table[state1_1][key] = temp
+            #         else:
+            #             table[state1_1][key] = elem.get(key)-1
+            #     state_num = state_num - 1
+            #     if self.__start_state==state1_1:
+            #         self.__start_state=state2_1 
+            #     if self.__end_state==state2_2:
+            #         self.__end_state=state1_2 
             else:
                 state_num=state_num+1
                 new_state1=state_num
@@ -232,8 +255,7 @@ class DFA:
         self.keys=nfa_object.keys()
         self.keys.remove('eps')
         self.dfa_table=self.nfa_to_dfa()
-        print(self.nfa_table)
-        print(self.dfa_table)
+       
     def get_e_closure(self,state):
         stack_states = StackClass(list(state))
         e_closure = state
@@ -258,9 +280,10 @@ class DFA:
 
     #Construct DFA from NFA, Procedure
     def nfa_to_dfa(self):
-
-        state0 = self.get_e_closure(list(map(int,str(self.nfa_start_state))))
-        print(state0)
+       
+        state0 = self.get_e_closure([self.nfa_start_state])
+        # state0 = self.get_e_closure(self.nfa_start_state)
+       
         unmarked_states = []
         self.all_dfa_states = []
         self.all_dfa_states.append(state0)
@@ -306,6 +329,6 @@ class DFA:
             return True
         else:
             return False
-test_nfa=NFA("( t . r . u . e ) | ( a . b . c . e )")
+test_nfa=NFA(IDENTIFIER)
 test_dfa=DFA(test_nfa)
-print(test_dfa.check('abce'))
+print(test_dfa.check('abbb_b'))
