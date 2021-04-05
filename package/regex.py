@@ -46,6 +46,14 @@ RBRACE="}"
 LBRACKET="["
 RBRACKET="]"
 COMMA=","
+ASSIGNMENT_OP='='
+LESS_THAN_OP='<'
+GREATER_THAN_OP='>'
+EQUAL_OP='= . ='
+LESS_THAN_OR_EQUAL_OP='< . ='
+GREATER_THAN_OR_EQUAL_OP='> . ='
+NOT_EQUAL_OP='! . ='
+
 
 def make_key(symbol):
     if symbol =='nl':
