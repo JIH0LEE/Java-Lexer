@@ -162,14 +162,9 @@ for i in regex:
     elif i=='.':
         state1_1,state1_2=stack.pop()
         state2_1,state2_2=stack.pop()
-        state1_2 = state1_1
-        state1_1 = state2_2
         stack.append([state2_1,state1_2])
-        elem = table[state1_2]
-        del table[state1_2]
-        for key in elem.keys():
-            table[state1_1][key] = elem.get(key)-1
-        state_num = state_num - 1
+        table[state2_2]['eps']=state1_1
+                
         if start_state==state1_1:
             start_state=state2_1 
         if end_state==state2_2:
