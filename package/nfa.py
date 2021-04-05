@@ -1,6 +1,4 @@
-from stackclass import StackClass
-import pandas as pd
-import numpy as np
+from .stackclass import StackClass
 
 
 class NFA:
@@ -9,7 +7,7 @@ class NFA:
         op_lst=['(',')','.','*','|']
         input_symbol_lst=[]
         for symbol in postfix:
-            if symbol not in op_lst:
+            if symbol not in op_lst and symbol not in input_symbol_lst:
                 input_symbol_lst.append(symbol) 
         input_symbol_lst.append('eps')
         return input_symbol_lst 
@@ -21,9 +19,9 @@ class NFA:
         return_lst=[]
         prec={}
         # this is the precedence order
-        prec['*']=3
-        prec['|']=2
-        prec['.']=1
+        prec['*']=4
+        prec['|']=3
+        prec['.']=2
         prec['(']=1
         op_lst=['*','|','.']
 
@@ -51,7 +49,7 @@ class NFA:
         while not stack.isEmpty():
             op_token=stack.pop()
             return_lst.append(op_token)
-        #print return_lst
+       
         return return_lst
 
 
@@ -71,6 +69,7 @@ class NFA:
         state_num=-1;new_state1=0;new_state2=0
          
         for i in self.__regex:
+           
             if i in self.__keys:
                 state_num=state_num+1
                 new_state1=state_num
@@ -99,18 +98,14 @@ class NFA:
             elif i=='.':
                 state1_1,state1_2=stack.pop()
                 state2_1,state2_2=stack.pop()
-                state1_2 = state1_1
-                state1_1 = state2_2
                 stack.append([state2_1,state1_2])
-                elem = table[state1_2]
-                del table[state1_2]
-                for key in elem.keys():
-                    table[state1_1][key] = elem.get(key)-1
-                state_num = state_num - 1
+                table[state2_2]['eps']=state1_1
+                
                 if self.__start_state==state1_1:
                     self.__start_state=state2_1 
                 if self.__end_state==state2_2:
                     self.__end_state=state1_2 
+            
             else:
                 state_num=state_num+1
                 new_state1=state_num
@@ -129,21 +124,30 @@ class NFA:
                 if self.__end_state==state2_2 or self.__end_state==state1_2:
                     self.__end_state=new_state2
 
-        # print(keys)
-        # print(self.__start_state)
-        # print(self.__end_state)
-        # print(table)
-
-        arr_mat = np.full((self.__end_state + 1, len(self.__keys)), [-1])
-        nfa_table = pd.DataFrame(arr_mat, columns = self.__keys, index = range(0, self.__end_state+1), dtype = 'object')
+       
+       
+        table_list=[]
+       
+       
+        for i in range(0,self.__end_state+1):
+            temp_dict=dict()
+            for i in self.__keys:
+                temp_dict[i]=-1
+            
+            table_list.append(temp_dict)
         
         i = 0   
+        
+            
         for elem in table:
+            
             for key, value in elem.items():
-                #print(key, value)
-                nfa_table.at[i,key]=value
+                
+                (table_list[i])[key]=value
+
             i = i+1
-        return nfa_table
+    
+        return table_list
        
 
     def keys(self):
@@ -155,6 +159,4 @@ class NFA:
     def start_state(self):
         return self.__start_state
     def end_state(self):
-        return self.__end_state    
-
-print(1)
+        return self.__end_state 
