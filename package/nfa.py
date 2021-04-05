@@ -1,15 +1,21 @@
 from .stackclass import StackClass
+from .regex import make_key
 
 
 class NFA:
 
     def make_input_symbol(self,postfix):
-        op_lst=['(',')','.','*','|']
+        op_lst=['.','*','|']
         input_symbol_lst=[]
         for symbol in postfix:
+            
+
+            
             if symbol not in op_lst and symbol not in input_symbol_lst:
+                
                 input_symbol_lst.append(symbol) 
         input_symbol_lst.append('eps')
+        
         return input_symbol_lst 
 
 
@@ -49,7 +55,7 @@ class NFA:
         while not stack.isEmpty():
             op_token=stack.pop()
             return_lst.append(op_token)
-       
+        
         return return_lst
 
 
@@ -71,6 +77,8 @@ class NFA:
         for i in self.__regex:
            
             if i in self.__keys:
+                i=make_key(i)
+               
                 state_num=state_num+1
                 new_state1=state_num
                 state_num=state_num+1
@@ -78,7 +86,6 @@ class NFA:
                 table.append({})
                 table.append({})
                 stack.append([new_state1,new_state2])
-                
                 table[new_state1][i]=new_state2
             elif i=='*':
                 state1,state2=stack.pop()
@@ -132,6 +139,7 @@ class NFA:
         for i in range(0,self.__end_state+1):
             temp_dict=dict()
             for i in self.__keys:
+                i=make_key(i)
                 temp_dict[i]=-1
             
             table_list.append(temp_dict)
@@ -142,11 +150,11 @@ class NFA:
         for elem in table:
             
             for key, value in elem.items():
-                
+                key=make_key(key)
                 (table_list[i])[key]=value
 
             i = i+1
-    
+        
         return table_list
        
 

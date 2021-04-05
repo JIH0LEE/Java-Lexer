@@ -1,5 +1,6 @@
 from .nfa import NFA
 from .stackclass import StackClass
+from .regex import make_key
 
 
 
@@ -9,10 +10,19 @@ class DFA:
         self.nfa_table=nfa_object.nfa_table()
         self.nfa_start_state=nfa_object.start_state()
         self.nfa_end_state=nfa_object.end_state()
-        self.keys=nfa_object.keys()
-        self.keys.remove('eps')
+        self.keys=self.change_key_form(nfa_object.keys())
+        
         self.dfa_table=self.nfa_to_dfa()
-       
+
+
+    def change_key_form(self,nfa_keys):
+        rt_key=[]
+        for i in nfa_keys:
+            rt_key.append(make_key(i))
+        rt_key.remove('eps')
+        return rt_key
+        
+
     def get_e_closure(self,state):
         stack_states = StackClass(list(state))
         e_closure = state
@@ -60,8 +70,11 @@ class DFA:
             s1 = unmarked_states.pop(0)
             
             for key in self.keys:
+                
                 inp_for_closure = []
                 for state in s1:
+                    
+                        
                     val_df = self.nfa_table[state][key]
                     if val_df!=-1:
                         if isinstance(val_df, list):

@@ -1,4 +1,4 @@
-WHITESPACE="( \n | \t | bl ) *"
+WHITESPACE="( nl | tab | bl ) *"
 
 DIGIT="("
 for i in range(48,58):
@@ -46,3 +46,23 @@ RBRACE="}"
 LBRACKET="["
 RBRACKET="]"
 COMMA=","
+
+def make_key(symbol):
+    if symbol =='nl':
+        symbol='\n'
+    elif symbol =='tab':
+        symbol='\t'
+    elif symbol =='bl':
+        symbol=' '
+    elif symbol=='lp':
+        symbol='('
+    elif symbol=='rp':
+        symbol=')'
+    elif symbol=='dq':
+        symbol='\"'
+    elif symbol=='sq':
+        symbol='\''   
+    elif symbol=="mul_op":
+        symbol='*'
+    
+    return symbol
