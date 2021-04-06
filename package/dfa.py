@@ -11,7 +11,7 @@ class DFA:
         self.keys=self.change_key_form(nfa_object.keys())
         self.dfa_table=self.nfa_to_dfa()
 
-
+    #function: make nfa keys to dfa keys by removing epsilon
     def change_key_form(self,nfa_keys):
 
         rt_key=[]
@@ -20,7 +20,7 @@ class DFA:
         rt_key.remove('eps')
         return rt_key
         
-
+    #function: get states with epsilon move
     def get_e_closure(self,state):
 
         states_stack = StackClass(list(state))
@@ -39,7 +39,7 @@ class DFA:
                     states_stack.push(e_states)
         return e_closure
     
-
+    #function: make nfa to dfa with Subset construct algorithm
     def nfa_to_dfa(self):
        
         state0 = self.get_e_closure([self.nfa_start_state])
@@ -77,7 +77,7 @@ class DFA:
                 table_list[index][key]= self.all_dfa_states.index(new_state)
         return table_list
 
-
+    #function:check
     def check(self,input):
         current_state=0
         for ch in input:

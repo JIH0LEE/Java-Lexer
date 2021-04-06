@@ -100,6 +100,7 @@ def lex(input_str):
         return None
 
 def print_token(token_list,file):
+
     for elem in token_list:
         if elem['name']!='WHITESPACE':
             if elem['name'] in ['VTYPE','ID','CHARACTER','BOOLEAN','STRING','INTEGER','OP','COM_OP']: 
@@ -107,48 +108,45 @@ def print_token(token_list,file):
             else:
                 file.write('<'+elem['name']+'>\n')
 
-file_name=sys.argv[1]
 
 
 
-try:
+if __name__ == "__main__":
 
-    readfile=open(file_name,'r')
-
-except:
-
-    sys.stderr.write("No file: %s\n" % file_name)
-    exit(1)
-
-
-data=readfile.read()
-readfile.close()
-token_lst=[]
-token_str=''
-temp_token=None
-token_to_add=None
-for i in range(len(data)):
-    token_str+=data[i]
-    temp_token=lex(token_str)
-    if temp_token!=None:
-        token_to_add=temp_token
-        if i==len(data)-1:
-            if token_to_add ==None:
-                print('err')
-            else:
-                token_lst.append(token_to_add)
-    else:
-        if token_to_add ==None:
-            continue   
-        else: 
-           
-            token_lst.append(token_to_add)
-            token_str=data[i]
-            temp_token=lex(token_str)
+    file_name=sys.argv[1]
+    try:
+        readfile=open(file_name,'r')
+    except:
+        sys.stderr.write("No file: %s\n" % file_name)
+        exit(1)
+    data=readfile.read()
+    readfile.close()
+    token_lst=[]
+    token_str=''
+    temp_token=None
+    token_to_add=None
+    for i in range(len(data)):
+        token_str+=data[i]
+        temp_token=lex(token_str)
+        if temp_token!=None:
             token_to_add=temp_token
-            if i== len(data)-1:
+            if i==len(data)-1:
+                if token_to_add ==None:
+                    print('err')
+                else:
+                    token_lst.append(token_to_add)
+        else:
+            if token_to_add ==None:
+                continue   
+            else: 
+            
                 token_lst.append(token_to_add)
+                token_str=data[i]
+                temp_token=lex(token_str)
+                token_to_add=temp_token
+                if i== len(data)-1:
+                    token_lst.append(token_to_add)
 
-writefile=open('test.out','w')
-print_token(token_lst,writefile)
-writefile.close()
+    writefile=open('test.out','w')
+    print_token(token_lst,writefile)
+    writefile.close()   
