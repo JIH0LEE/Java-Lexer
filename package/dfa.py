@@ -2,9 +2,6 @@ from .nfa import NFA
 from .stackclass import StackClass
 from .regex import make_key
 
-
-
-
 class DFA:
     def __init__(self,nfa_object):
 

@@ -26,7 +26,7 @@ BOOLEAN="b . o . o . l . e . a . n"
 
 STRING="s . t . r . i . n . g"
 
-SIGNED_INTEGER="( - | eps ) . ( "+DIGIT+ " ) . ( "+DIGIT+ " ) *"
+SIGNED_INTEGER="0 | ( ( - | eps ) . ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ) . ( "+DIGIT+ " ) * )"
 
 SINGLE_CHARACTER="sq . ( "+LETTER+" ) . sq"
 

@@ -1,5 +1,4 @@
 from package import *
-DFA_list=[]
 
 INT_dfa=DFA(NFA(INT))
 
@@ -7,7 +6,7 @@ CHAR_dfa=DFA(NFA(CHAR))
    
 BOOLEAN_dfa=DFA(NFA(BOOLEAN))
 
-STRING_dfa=DFA(NFA(STRING))s
+STRING_dfa=DFA(NFA(STRING))
 
 SIGNED_INTEGER_dfa=DFA(NFA(SIGNED_INTEGER))
 
@@ -117,7 +116,13 @@ def lex(input_str):
         rt_token['name']='IDENTIFIER'
         rt_token['value']=input_str
         return rt_token
+    if SUB_OP_dfa.check(input_str):
+        rt_token['name']='SUB_OP'
+        rt_token['value']=input_str
+        return rt_token 
     if SIGNED_INTEGER_dfa.check(input_str):
+        if input_str[0]=='-' and token_lst[-1]['name'] in ['RPAREN','IDENTIFIER','SIGNED_INTEGER','RBRACKET','RBRACE']:
+            return None
         rt_token['name']='SIGNED_INTEGER'
         rt_token['value']=input_str
         return rt_token
@@ -133,10 +138,6 @@ def lex(input_str):
         rt_token['name']='ADD_OP'
         rt_token['value']=input_str
         return rt_token  
-    if SUB_OP_dfa.check(input_str):
-        rt_token['name']='SUB_OP'
-        rt_token['value']=input_str
-        return rt_token 
     if MUL_OP_dfa.check(input_str):
         rt_token['name']='MUL_OP'
         rt_token['value']=input_str
