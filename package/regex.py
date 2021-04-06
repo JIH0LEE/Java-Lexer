@@ -28,23 +28,25 @@ for i in range(125,127):
     TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
 TERMINAL_SYMBOL+=" lp | rp | dot | mul_op | bl | bar )"
     
-INT="i . n . t"
+INT="( i . n . t )"
 
-CHAR="c . h . a . r"
+CHAR="( c . h . a . r )"
 
-BOOLEAN="b . o . o . l . e . a . n"
+BOOL="( b . o . o . l . e . a . n )"
 
-STRING="s . t . r . i . n . g"
+STRING="( s . t . r . i . n . g ) "
 
-SIGNED_INTEGER="0 | ( ( - | eps ) . ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ) . ( "+DIGIT+ " ) * )"
+VTYPE=INT+' | ' +CHAR+' | '+ BOOL + ' | ' + STRING
 
-SINGLE_CHARACTER="' . "+TERMINAL_SYMBOL+"  . '"
+INTEGER="0 | ( ( - | eps ) . ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ) . ( "+DIGIT+ " ) * )"
 
-BOOLEAN_STRING="( t . r . u . e ) | ( f . a . l . s . e )"
+CHARACTER="' . "+TERMINAL_SYMBOL+"  . '"
 
-LITERAL_STRING='" . '+TERMINAL_SYMBOL+ ' * . "'
+BOOLEAN="( t . r . u . e ) | ( f . a . l . s . e )"
 
-IDENTIFIER="( "+LETTER+" | _ ) . ( "+LETTER+ " | "+DIGIT+" | _ ) *" 
+STRING='" . '+TERMINAL_SYMBOL+ ' * . "'
+
+ID="( "+LETTER+" | _ ) . ( "+LETTER+ " | "+DIGIT+" | _ ) *" 
 
 IF="i . f"
 
@@ -64,6 +66,8 @@ MUL_OP="mul_op"
 
 DIV_OP="/"
 
+OP=ADD_OP+' | '+SUB_OP+' | '+MUL_OP+' | '+DIV_OP
+
 SEMI_COLON=";"
 
 LPAREN="lp"
@@ -80,19 +84,21 @@ RBRACKET="]"
 
 COMMA=","
 
-ASSIGNMENT_OP='='
+ASSIGN='='
 
 LESS_THAN_OP='<'
 
 GREATER_THAN_OP='>'
 
-EQUAL_OP='= . ='
+EQUAL_OP='( = . = )'
 
-LESS_THAN_OR_EQUAL_OP='< . ='
+LESS_THAN_OR_EQUAL_OP='( < . = )'
 
-GREATER_THAN_OR_EQUAL_OP='> . ='
+GREATER_THAN_OR_EQUAL_OP='( > . = )'
 
-NOT_EQUAL_OP='! . ='
+NOT_EQUAL_OP='( ! . = )'
+
+COM_OP=LESS_THAN_OP +' | '+GREATER_THAN_OP +' | '+EQUAL_OP+' | '+ LESS_THAN_OR_EQUAL_OP+' | '+ GREATER_THAN_OR_EQUAL_OP+' | '+ NOT_EQUAL_OP
 
 
 def make_key(symbol):

@@ -1,152 +1,9 @@
+import sys
 from package import *
-
-INT_dfa=DFA(NFA(INT))
-
-CHAR_dfa=DFA(NFA(CHAR))
-   
-BOOLEAN_dfa=DFA(NFA(BOOLEAN))
-
-STRING_dfa=DFA(NFA(STRING))
-
-SIGNED_INTEGER_dfa=DFA(NFA(SIGNED_INTEGER))
-
-SINGLE_CHARACTER_dfa=DFA(NFA(SINGLE_CHARACTER))
-
-BOOLEAN_STRING=DFA(NFA(BOOLEAN_STRING))
-
-LITERAL_STRING_dfa=DFA(NFA(LITERAL_STRING)) 
-
-IDENTIFIER_dfa=DFA(NFA(IDENTIFIER))
-
-IF_dfa=DFA(NFA(IF))
-
-ELSE_dfa=DFA(NFA(ELSE))
-
-WHILE_dfa=DFA(NFA(WHILE))
-
-CLASS_dfa=DFA(NFA(CLASS))
-
-RETURN_dfa=DFA(NFA(RETURN))
-
-ADD_OP_dfa=DFA(NFA(ADD_OP))
-
-SUB_OP_dfa=DFA(NFA(SUB_OP))
-
-MUL_OP_dfa=DFA(NFA(MUL_OP))
-
-DIV_OP_dfa=DFA(NFA(DIV_OP))
-
-SEMI_COLON_dfa=DFA(NFA(SEMI_COLON))
-
-LPAREN_dfa=DFA(NFA(LPAREN))
-
-RPAREN_dfa=DFA(NFA(RPAREN))
-
-LBRACE_dfa=DFA(NFA(LBRACE))
-
-RBRACE_dfa=DFA(NFA(RBRACE))
-
-LBRACKET_dfa=DFA(NFA(LBRACKET))
-
-RBRACKET_dfa=DFA(NFA(RBRACKET))
-
-COMMA_dfa=DFA(NFA(COMMA))
-
-WHITESPACE_dfa=DFA(NFA(WHITESPACE))
-
-ASSIGNMENT_OP_dfa=DFA(NFA(ASSIGNMENT_OP))
-
-LESS_THAN_OP_dfa=DFA(NFA(LESS_THAN_OP))
-
-GREATER_THAN_OP_dfa=DFA(NFA(GREATER_THAN_OP))
-
-EQUAL_OP_dfa=DFA(NFA(EQUAL_OP))
-
-LESS_THAN_OR_EQUAL_OP_dfa=DFA(NFA(LESS_THAN_OR_EQUAL_OP))
-
-GREATER_THAN_OR_EQUAL_OP_dfa=DFA(NFA(GREATER_THAN_OR_EQUAL_OP))
-
-NOT_EQUAL_OP_dfa=DFA(NFA(NOT_EQUAL_OP))
-
 
 def lex(input_str):
 
     rt_token=dict()
-    if INT_dfa.check(input_str):
-        rt_token['name']='INT'
-        rt_token['value']=input_str
-        return rt_token
-    if CHAR_dfa.check(input_str):
-        rt_token['name']='CHAR'
-        rt_token['value']=input_str
-        return rt_token
-    if BOOLEAN_dfa.check(input_str):
-        rt_token['name']='BOOLEAN'
-        rt_token['value']=input_str
-        return rt_token
-    if STRING_dfa.check(input_str):
-        rt_token['name']='STRING'
-        rt_token['value']=input_str
-        return rt_token
-    if WHILE_dfa.check(input_str):
-        rt_token['name']='WHILE'
-        rt_token['value']=input_str
-        return rt_token
-    if IF_dfa.check(input_str):
-        rt_token['name']='IF'
-        rt_token['value']=input_str
-        return rt_token
-    if ELSE_dfa.check(input_str):
-        rt_token['name']='ELSE'
-        rt_token['value']=input_str
-        return rt_token
-    if CLASS_dfa.check(input_str):
-        rt_token['name']='CLASS'
-        rt_token['value']=input_str
-        return rt_token 
-    if RETURN_dfa.check(input_str):
-        rt_token['name']='RETURN'
-        rt_token['value']=input_str
-        return rt_token     
-    if WHITESPACE_dfa.check(input_str):
-        rt_token['name']='WHITESPACE'
-        rt_token['value']=input_str
-        return rt_token 
-    if IDENTIFIER_dfa.check(input_str):
-        rt_token['name']='IDENTIFIER'
-        rt_token['value']=input_str
-        return rt_token
-    if SUB_OP_dfa.check(input_str):
-        rt_token['name']='SUB_OP'
-        rt_token['value']=input_str
-        return rt_token 
-    if SIGNED_INTEGER_dfa.check(input_str):
-        if input_str[0]=='-' and token_lst[-1]['name'] in ['RPAREN','IDENTIFIER','SIGNED_INTEGER','RBRACKET','RBRACE']:
-            return None
-        rt_token['name']='SIGNED_INTEGER'
-        rt_token['value']=input_str
-        return rt_token
-    if LITERAL_STRING_dfa.check(input_str):
-        rt_token['name']='LITERAL_STRING'
-        rt_token['value']=input_str
-        return rt_token        
-    if SINGLE_CHARACTER_dfa.check(input_str):
-        rt_token['name']='SINGLE_CHARACTER'
-        rt_token['value']=input_str
-        return rt_token
-    if ADD_OP_dfa.check(input_str):
-        rt_token['name']='ADD_OP'
-        rt_token['value']=input_str
-        return rt_token  
-
-    if MUL_OP_dfa.check(input_str):
-        rt_token['name']='MUL_OP'
-        rt_token['value']=input_str
-        return rt_token 
-    if DIV_OP_dfa.check(input_str):
-        rt_token['name']='DIV_OP'
-        rt_token['value']=input_str
-        return rt_token 
     if SEMI_COLON_dfa.check(input_str):
         rt_token['name']='SEMICOLON'
         rt_token['value']=input_str
@@ -175,49 +32,97 @@ def lex(input_str):
         rt_token['name']='RBRACKET'
         rt_token['value']=input_str
         return rt_token 
-    if COMMA_dfa.check(input_str):
-        rt_token['name']='COMMA'
+
+    if COM_OP_dfa.check(input_str):
+        rt_token['name']='COM_OP'
         rt_token['value']=input_str
         return rt_token 
-    if LESS_THAN_OP_dfa.check(input_str):
-        rt_token['name']='LESS_THAN_OP'
+    if ASSIGN_dfa.check(input_str):
+        rt_token['name']='ASSIGN'
+        rt_token['value']=input_str        
+        return rt_token 
+
+    if OP_dfa.check(input_str):
+        rt_token['name']='OP'
         rt_token['value']=input_str
         return rt_token 
-    if GREATER_THAN_OP_dfa.check(input_str):
-        rt_token['name']='GREATER_THAN_OP'
+    if VTYPE_dfa.check(input_str):
+        rt_token['name']='VTYPE'
+        rt_token['value']=input_str
+        return rt_token
+    if BOOLEAN_dfa.check(input_str):
+        rt_token['name']='BOOLEAN'
+        rt_token['value']=input_str
+        return rt_token
+    if WHILE_dfa.check(input_str):
+        rt_token['name']='WHILE'
+        rt_token['value']=input_str
+        return rt_token
+    if IF_dfa.check(input_str):
+        rt_token['name']='IF'
+        rt_token['value']=input_str
+        return rt_token
+    if ELSE_dfa.check(input_str):
+        rt_token['name']='ELSE'
+        rt_token['value']=input_str
+        return rt_token
+    if CLASS_dfa.check(input_str):
+        rt_token['name']='CLASS'
         rt_token['value']=input_str
         return rt_token 
-    if EQUAL_OP_dfa.check(input_str):
-        rt_token['name']='EQAUL_OP'
+    if RETURN_dfa.check(input_str):
+        rt_token['name']='RETURN'
+        rt_token['value']=input_str
+        return rt_token     
+    if WHITESPACE_dfa.check(input_str):
+        rt_token['name']='WHITESPACE'
         rt_token['value']=input_str
         return rt_token 
-    if ASSIGNMENT_OP_dfa.check(input_str):
-        rt_token['name']='ASSIGNMENT_OP'
+    if ID_dfa.check(input_str):
+        rt_token['name']='ID'
         rt_token['value']=input_str
-        return rt_token 
-    if NOT_EQUAL_OP_dfa.check(input_str):
-        rt_token['name']='NOT_EQAUL_OP'
+        return rt_token
+    if INTEGER_dfa.check(input_str):
+        if input_str[0]=='-' and token_lst[-1]['name'] in ['RPAREN','ID','INTEGER','RBRACKET','RBRACE']:
+            return None
+        rt_token['name']='INTEGER'
         rt_token['value']=input_str
-        return rt_token 
-    if GREATER_THAN_OR_EQUAL_OP_dfa.check(input_str):
-        rt_token['name']='GREATER_THAN_OR_EQUAL_OP'
+        return rt_token
+    if STRING_dfa.check(input_str):
+        rt_token['name']='STRING'
         rt_token['value']=input_str
-        return rt_token 
-    if LESS_THAN_OR_EQUAL_OP_dfa.check(input_str):
-        rt_token['name']='LESS_THAN_OR_EQUAL_OP'
+        return rt_token        
+    if CHARACTER_dfa.check(input_str):
+        rt_token['name']='CHARACTER'
         rt_token['value']=input_str
-        return rt_token 
+        return rt_token
     else:
         return None
 
-def print_token(token_list):
+def print_token(token_list,file):
     for elem in token_list:
         if elem['name']!='WHITESPACE':
-            print('<'+elem['name']+","+elem['value']+'>')
+            if elem['name'] in ['VTYPE','ID','CHARACTER','BOOLEAN','STRING','INTEGER','OP','COM_OP']: 
+                file.write('<'+elem['name']+","+elem['value']+'>\n')
+            else:
+                file.write('<'+elem['name']+'>\n')
+
+file_name=sys.argv[1]
 
 
-f=open('test.txt','r')
-data=f.read()
+
+try:
+
+    readfile=open(file_name,'r')
+
+except:
+
+    sys.stderr.write("No file: %s\n" % file_name)
+    exit(1)
+
+
+data=readfile.read()
+readfile.close()
 token_lst=[]
 token_str=''
 temp_token=None
@@ -229,22 +134,21 @@ for i in range(len(data)):
         token_to_add=temp_token
         if i==len(data)-1:
             if token_to_add ==None:
-                print(err)
+                print('err')
             else:
                 token_lst.append(token_to_add)
     else:
         if token_to_add ==None:
             continue   
         else: 
+           
             token_lst.append(token_to_add)
             token_str=data[i]
             temp_token=lex(token_str)
             token_to_add=temp_token
             if i== len(data)-1:
                 token_lst.append(token_to_add)
-print(token_lst)
 
-
-    
-
-
+writefile=open('test.out','w')
+print_token(token_lst,writefile)
+writefile.close()
