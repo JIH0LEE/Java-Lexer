@@ -1,11 +1,13 @@
 from package import *
 DFA_list=[]
+
 INT_dfa=DFA(NFA(INT))
+
 CHAR_dfa=DFA(NFA(CHAR))
    
 BOOLEAN_dfa=DFA(NFA(BOOLEAN))
 
-STRING_dfa=DFA(NFA(STRING))
+STRING_dfa=DFA(NFA(STRING))s
 
 SIGNED_INTEGER_dfa=DFA(NFA(SIGNED_INTEGER))
 
@@ -53,17 +55,23 @@ COMMA_dfa=DFA(NFA(COMMA))
 
 WHITESPACE_dfa=DFA(NFA(WHITESPACE))
 
-
 ASSIGNMENT_OP_dfa=DFA(NFA(ASSIGNMENT_OP))
+
 LESS_THAN_OP_dfa=DFA(NFA(LESS_THAN_OP))
+
 GREATER_THAN_OP_dfa=DFA(NFA(GREATER_THAN_OP))
+
 EQUAL_OP_dfa=DFA(NFA(EQUAL_OP))
+
 LESS_THAN_OR_EQUAL_OP_dfa=DFA(NFA(LESS_THAN_OR_EQUAL_OP))
+
 GREATER_THAN_OR_EQUAL_OP_dfa=DFA(NFA(GREATER_THAN_OR_EQUAL_OP))
+
 NOT_EQUAL_OP_dfa=DFA(NFA(NOT_EQUAL_OP))
 
 
 def lex(input_str):
+
     rt_token=dict()
     if INT_dfa.check(input_str):
         rt_token['name']='INT'
@@ -199,7 +207,10 @@ def lex(input_str):
         return rt_token 
     else:
         return None
-                                                                                                                                                       
+
+
+
+
 f=open('test.txt','r')
 data=f.read()
 token_lst=[]
@@ -210,7 +221,7 @@ for ch in data:
     token_to_add=temp_token
     temp_token=lex(token_str)
     if temp_token==None:
-        token_lst.append(token_to_add)
+        token_lst.append(token_to_add)  
         token_str=ch
         temp_token=lex(token_str)
 print(token_lst)
