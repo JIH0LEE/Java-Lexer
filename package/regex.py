@@ -17,7 +17,17 @@ for i in range(65,91):
         LETTER+=" "+ chr(i)+" |"
         LETTER+=" "+ chr(i+32)
 LETTER+=" )"
-
+TERMINAL_SYMBOL="("
+for i in range(33,40):
+    TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
+for i in range(43,46):
+    TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
+for i in range(47,124):
+    TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
+for i in range(125,127):
+    TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
+TERMINAL_SYMBOL+=" lp | rp | dot | mul_op | bl | bar )"
+    
 INT="i . n . t"
 
 CHAR="c . h . a . r"
@@ -28,11 +38,11 @@ STRING="s . t . r . i . n . g"
 
 SIGNED_INTEGER="0 | ( ( - | eps ) . ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ) . ( "+DIGIT+ " ) * )"
 
-SINGLE_CHARACTER="sq . ( "+LETTER+" ) . sq"
+SINGLE_CHARACTER="' . "+TERMINAL_SYMBOL+"  . '"
 
 BOOLEAN_STRING="( t . r . u . e ) | ( f . a . l . s . e )"
 
-LITERAL_STRING="dq . ( "+LETTER+" | "+DIGIT+"  | bl ) * . dq"
+LITERAL_STRING='" . '+TERMINAL_SYMBOL+ ' * . "'
 
 IDENTIFIER="( "+LETTER+" | _ ) . ( "+LETTER+ " | "+DIGIT+" | _ ) *" 
 
@@ -97,10 +107,10 @@ def make_key(symbol):
         symbol='('
     elif symbol=='rp':
         symbol=')'
-    elif symbol=='dq':
-        symbol='\"'
-    elif symbol=='sq':
-        symbol='\''   
     elif symbol=="mul_op":
         symbol='*'
+    elif symbol=="dot":
+        symbol='.'
+    elif symbol=="bar":
+        symbol='|'
     return symbol

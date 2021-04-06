@@ -138,6 +138,7 @@ def lex(input_str):
         rt_token['name']='ADD_OP'
         rt_token['value']=input_str
         return rt_token  
+
     if MUL_OP_dfa.check(input_str):
         rt_token['name']='MUL_OP'
         rt_token['value']=input_str
@@ -209,22 +210,41 @@ def lex(input_str):
     else:
         return None
 
-
+def print_token(token_list):
+    for elem in token_list:
+        if elem['name']!='WHITESPACE':
+            print('<'+elem['name']+","+elem['value']+'>')
 
 
 f=open('test.txt','r')
 data=f.read()
 token_lst=[]
 token_str=''
-temp_token=dict()
-for ch in data:
-    token_str+=ch
-    token_to_add=temp_token
+temp_token=None
+token_to_add=None
+for i in range(len(data)):
+    token_str+=data[i]
     temp_token=lex(token_str)
-    if temp_token==None:
-        token_lst.append(token_to_add)  
-        token_str=ch
-        temp_token=lex(token_str)
+    if temp_token!=None:
+        token_to_add=temp_token
+        if i==len(data)-1:
+            if token_to_add ==None:
+                print(err)
+            else:
+                token_lst.append(token_to_add)
+    else:
+        if token_to_add ==None:
+            continue   
+        else: 
+            token_lst.append(token_to_add)
+            token_str=data[i]
+            temp_token=lex(token_str)
+            token_to_add=temp_token
+            if i== len(data)-1:
+                token_lst.append(token_to_add)
 print(token_lst)
+
+
     
+
 

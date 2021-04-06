@@ -42,7 +42,8 @@ class NFA:
                 return_lst.append(token)        
         while not stack.isEmpty():
             op_token=stack.pop()
-            return_lst.append(op_token)     
+            return_lst.append(op_token)   
+  
         return return_lst
 
 
