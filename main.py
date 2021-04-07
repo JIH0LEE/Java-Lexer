@@ -1,5 +1,10 @@
 import sys
 from package import *
+from package.dfa_object import *
+
+
+#function:find token with given input
+#keyword and vtype have higher precedence
 
 def lex(input_str):
 
@@ -82,6 +87,7 @@ def lex(input_str):
         rt_token['name']='ID'
         rt_token['value']=input_str
         return rt_token
+    #by peeking token list, choose '-' is signed integer or minus operator
     if INTEGER_dfa.check(input_str):
         if input_str[0]=='-' and token_lst[-1]['name'] in ['RPAREN','ID','INTEGER','RBRACKET','RBRACE']:
             return None
@@ -125,10 +131,11 @@ if __name__ == "__main__":
     token_str=''
     temp_token=None
     token_to_add=None
+
     for i in range(len(data)):
         token_str+=data[i]
         temp_token=lex(token_str)
-        if temp_token!=None:
+        if temp_token!=None:                        
             token_to_add=temp_token
             if i==len(data)-1:
                 if token_to_add ==None:

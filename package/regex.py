@@ -1,12 +1,12 @@
 #   Module for defining regular expression
 
 #-------------Operator-------------
-#   .   means concatenattion
+#   .   means concatenation
 #   *   means exponentiation 
 #   |   means union
 
 
-# -------------unique token-------------
+# -------------unique symbol-------------
 # nl is '\n'
 # tab is '\t'
 # bl is ' '
@@ -17,7 +17,6 @@
 # rp is ')'
 
 # These tokens are used to distinguish them from operators
-
 
 
 WHITESPACE="( nl | tab | bl ) *"     
@@ -49,7 +48,7 @@ for i in range(47,124):
     TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
 for i in range(125,127):
     TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
-TERMINAL_SYMBOL+=" lp | rp | dot | mul_op | bl | bar )"
+TERMINAL_SYMBOL+=" lp | rp | dot | mul_op | bl )"
     
 INT="( i . n . t )"
 
@@ -123,6 +122,35 @@ NOT_EQUAL_OP='( ! . = )'
 
 COM_OP=LESS_THAN_OP +' | '+GREATER_THAN_OP +' | '+EQUAL_OP+' | '+ LESS_THAN_OR_EQUAL_OP+' | '+ GREATER_THAN_OR_EQUAL_OP+' | '+ NOT_EQUAL_OP
 
+regex_lst=[]
+regex_lst.append(WHITESPACE)
+regex_lst.append(INT)
+regex_lst.append(CHAR)
+regex_lst.append(BOOL)
+regex_lst.append(STRING)
+regex_lst.append(VTYPE)          
+regex_lst.append(INTEGER)
+regex_lst.append(CHARACTER)
+regex_lst.append(BOOLEAN)
+regex_lst.append(STRING)
+regex_lst.append(ID)
+regex_lst.append(IF)
+regex_lst.append(ELSE)
+regex_lst.append(WHILE)
+regex_lst.append(CLASS)
+regex_lst.append(RETURN)
+regex_lst.append(OP)
+regex_lst.append(SEMI_COLON)
+regex_lst.append(LPAREN)
+regex_lst.append(RPAREN)
+regex_lst.append(LBRACE)
+regex_lst.append(RBRACE)
+regex_lst.append(LBRACKET)
+regex_lst.append(RBRACKET)
+regex_lst.append(COMMA)
+regex_lst.append(ASSIGN)
+regex_lst.append(COM_OP)
+
 #This function is changing unique symbol which has same form with operator of regular expression 
 def make_key(symbol):
     
@@ -140,6 +168,5 @@ def make_key(symbol):
         symbol='*'
     elif symbol=="dot":
         symbol='.'
-    elif symbol=="bar":
-        symbol='|'
+  
     return symbol

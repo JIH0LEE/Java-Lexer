@@ -9,15 +9,16 @@ class DFA:
         self.nfa_start_state=nfa_object.start_state()
         self.nfa_end_state=nfa_object.end_state()
         self.keys=self.change_key_form(nfa_object.keys())
-        self.dfa_table=self.nfa_to_dfa()
+        self.__dfa_table=self.nfa_to_dfa()
 
     #function: make nfa keys to dfa keys by removing epsilon
     def change_key_form(self,nfa_keys):
 
         rt_key=[]
         for i in nfa_keys:
-            rt_key.append(make_key(i))
-        rt_key.remove('eps')
+            if i!='eps':
+                rt_key.append(make_key(i))
+        
         return rt_key
         
     #function: get states with epsilon move
@@ -28,7 +29,7 @@ class DFA:
         while not(states_stack.isEmpty()):
             top_ele = states_stack.pop()
             e_states = self.nfa_table[top_ele]['eps']
-            if e_states != -1 and isinstance(e_states, list):
+            if e_states != -1 and isinstance(e_states, list):   
                 for e_state in e_states:
                     if e_state not in e_closure:
                         e_closure.append(e_state)
@@ -77,15 +78,23 @@ class DFA:
                 table_list[index][key]= self.all_dfa_states.index(new_state)
         return table_list
 
-    #function:check
+    #function:check is true when final state has end state
     def check(self,input):
         current_state=0
         for ch in input:
             if ch not in self.keys:
                 return False
-            current_state=self.dfa_table[current_state][ch]
+            current_state=self.__dfa_table[current_state][ch]
         final_state=self.all_dfa_states[current_state]
         if self.nfa_end_state in final_state:
             return True
         else:
             return False
+        
+    def table(self):
+        return self.__dfa_table
+
+
+        
+    def getkeys(self):
+        return self.keys
