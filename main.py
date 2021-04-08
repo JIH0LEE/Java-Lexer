@@ -94,7 +94,7 @@ def lex(input_str):
         rt_token['name']='INTEGER'
         rt_token['value']=input_str
         return rt_token
-    if STRING_dfa.check(input_str):
+    if STRING_LITERAL_dfa.check(input_str):
         rt_token['name']='STRING'
         rt_token['value']=input_str
         return rt_token        

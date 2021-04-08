@@ -87,7 +87,7 @@ class NFA:
 
             #case operator *: get 1 table from stack for using operand 
             #make 2 new states with epsilon move to make exponentiation
-            elif i=='*':
+            elif i=='*':    
                 state1,state2=stack.pop()
                 state_num=state_num+1
                 new_state1=state_num

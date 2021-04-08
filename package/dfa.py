@@ -29,7 +29,7 @@ class DFA:
         while not(states_stack.isEmpty()):
             top_ele = states_stack.pop()
             e_states = self.nfa_table[top_ele]['eps']
-            if e_states != -1 and isinstance(e_states, list):   
+            if e_states != -1 and isinstance(e_states, list):   # if e_state is list
                 for e_state in e_states:
                     if e_state not in e_closure:
                         e_closure.append(e_state)
@@ -53,21 +53,21 @@ class DFA:
         for i in self.keys:
             temp_dict[i]=-1       
         table_list.append(temp_dict)
-        index = -1
+        state_num = -1
         while unmarked_states:
-            index = index + 1
+            state_num = state_num + 1
             unmarked_state = unmarked_states.pop(0)
             for key in self.keys:
-                inp_for_closure = []
+                lst_for_e_closure = []
                 for state in unmarked_state:
-                    val_df = self.nfa_table[state][key]
-                    if val_df!=-1:
-                        if isinstance(val_df, list):
-                            for i in val_df:
-                                inp_for_closure.append(i)
+                    value = self.nfa_table[state][key]
+                    if value!=-1:
+                        if isinstance(value, list):
+                            for i in value:
+                                lst_for_e_closure.append(i)
                         else:
-                            inp_for_closure.append(val_df)
-                new_state = self.get_e_closure(inp_for_closure)
+                            lst_for_e_closure.append(value)
+                new_state = self.get_e_closure(lst_for_e_closure)
                 if new_state not in self.all_dfa_states:
                     self.all_dfa_states.append(new_state)
                     unmarked_states.append(new_state)
@@ -75,7 +75,7 @@ class DFA:
                     for i in self.keys:
                         temp_dict[i]=-1
                     table_list.append(temp_dict)
-                table_list[index][key]= self.all_dfa_states.index(new_state)
+                table_list[state_num][key]= self.all_dfa_states.index(new_state)
         return table_list
 
     #function:check is true when final state has end state
@@ -93,8 +93,6 @@ class DFA:
         
     def table(self):
         return self.__dfa_table
-
-
         
     def getkeys(self):
         return self.keys

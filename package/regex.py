@@ -66,7 +66,7 @@ CHARACTER="' . "+TERMINAL_SYMBOL+"  . '"
 
 BOOLEAN="( t . r . u . e ) | ( f . a . l . s . e )"
 
-STRING='" . '+TERMINAL_SYMBOL+ ' * . "'
+STRING_LITERAL='" . ( '+WHITESPACE+' | '+LETTER+' | '+ DIGIT+' ) * . "'
 
 ID="( "+LETTER+" | _ ) . ( "+LETTER+ " | "+DIGIT+" | _ ) *" 
 
@@ -132,7 +132,7 @@ regex_lst.append(VTYPE)
 regex_lst.append(INTEGER)
 regex_lst.append(CHARACTER)
 regex_lst.append(BOOLEAN)
-regex_lst.append(STRING)
+regex_lst.append(STRING_LITERAL)
 regex_lst.append(ID)
 regex_lst.append(IF)
 regex_lst.append(ELSE)
