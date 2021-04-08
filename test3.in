@@ -1,0 +1,5 @@
+int num=-3
+char ch='a'
+string myname="jiho    "
+boolean flag=true
+boolean flag2=false

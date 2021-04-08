@@ -6,9 +6,6 @@ class DFA:
     def __init__(self,nfa_object):
 
         self.nfa=nfa_object
-        # self.nfa.nfa_table=nfa_object.nfa.nfa_table()()
-        # self.nfa.start_state()=nfa_object.start_state()
-        # self.nfa.end_state()=nfa_object.end_state()
         self.keys=self.change_key_form(self.nfa.keys())
         self.__dfa_table=self.nfa_to_dfa()
 

@@ -1,0 +1,20 @@
+<VTYPE,int>
+<ID,num>
+<ASSIGN>
+<INTEGER,-3>
+<VTYPE,char>
+<ID,ch>
+<ASSIGN>
+<CHARACTER,'a'>
+<VTYPE,string>
+<ID,myname>
+<ASSIGN>
+<STRING,"jiho    ">
+<VTYPE,boolean>
+<ID,flag>
+<ASSIGN>
+<BOOLEAN,true>
+<VTYPE,boolean>
+<ID,flag2>
+<ASSIGN>
+<BOOLEAN,false>

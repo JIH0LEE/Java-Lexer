@@ -8,7 +8,40 @@ from package.dfa_object import *
 
 def lex(input_str):
 
+	# requirement1: If input_string satisfy DFA, do not check other DFA and return 	token name and value
+
+	# requirement2: KEYWORDS DFAs and VtTYPE DFA must take precedence over 	other 	DFAs.
+
+	# requirement3: When input_string starts with '-' and satisfies both INTERGER 	DFA and SUB_OP DFA, check top of token_lst and get suitable token.
     rt_token=dict()
+    if VTYPE_dfa.check(input_str):
+        rt_token['name']='VTYPE'
+        rt_token['value']=input_str
+        return rt_token
+    if BOOLEAN_dfa.check(input_str):
+        rt_token['name']='BOOLEAN'
+        rt_token['value']=input_str
+        return rt_token
+    if WHILE_dfa.check(input_str):
+        rt_token['name']='WHILE'
+        rt_token['value']=input_str
+        return rt_token
+    if IF_dfa.check(input_str):
+        rt_token['name']='IF'
+        rt_token['value']=input_str
+        return rt_token
+    if ELSE_dfa.check(input_str):
+        rt_token['name']='ELSE'
+        rt_token['value']=input_str
+        return rt_token
+    if CLASS_dfa.check(input_str):
+        rt_token['name']='CLASS'
+        rt_token['value']=input_str
+        return rt_token 
+    if RETURN_dfa.check(input_str):
+        rt_token['name']='RETURN'
+        rt_token['value']=input_str
+        return rt_token
     if SEMI_COLON_dfa.check(input_str):
         rt_token['name']='SEMICOLON'
         rt_token['value']=input_str
@@ -50,35 +83,7 @@ def lex(input_str):
     if OP_dfa.check(input_str):
         rt_token['name']='OP'
         rt_token['value']=input_str
-        return rt_token 
-    if VTYPE_dfa.check(input_str):
-        rt_token['name']='VTYPE'
-        rt_token['value']=input_str
-        return rt_token
-    if BOOLEAN_dfa.check(input_str):
-        rt_token['name']='BOOLEAN'
-        rt_token['value']=input_str
-        return rt_token
-    if WHILE_dfa.check(input_str):
-        rt_token['name']='WHILE'
-        rt_token['value']=input_str
-        return rt_token
-    if IF_dfa.check(input_str):
-        rt_token['name']='IF'
-        rt_token['value']=input_str
-        return rt_token
-    if ELSE_dfa.check(input_str):
-        rt_token['name']='ELSE'
-        rt_token['value']=input_str
-        return rt_token
-    if CLASS_dfa.check(input_str):
-        rt_token['name']='CLASS'
-        rt_token['value']=input_str
-        return rt_token 
-    if RETURN_dfa.check(input_str):
-        rt_token['name']='RETURN'
-        rt_token['value']=input_str
-        return rt_token     
+        return rt_token      
     if WHITESPACE_dfa.check(input_str):
         rt_token['name']='WHITESPACE'
         rt_token['value']=input_str
@@ -118,6 +123,10 @@ def print_token(token_list,file):
 
 
 if __name__ == "__main__":
+    	# 1. Get symbol from input_string until lex() returns nothing.
+		# 2. Add the most recent return token from lexer(). 
+		# 3. Then restart to make new token.
+		# 4. If the file is read to the end and there is no suitalbe token, an error ocuurs.
 
     file_name=sys.argv[1]
     try:
@@ -151,9 +160,9 @@ if __name__ == "__main__":
                 token_str=data[i]
                 temp_token=lex(token_str)
                 token_to_add=temp_token
-                if i== len(data)-1:
+                if i== len(data)-1:         
                     token_lst.append(token_to_add)
 
-    writefile=open('test.out','w')
+    writefile=open(file_name.split('.')[0]+".out",'w')
     print_token(token_lst,writefile)
     writefile.close()   
