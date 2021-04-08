@@ -5,10 +5,11 @@ from .regex import make_key
 class DFA:
     def __init__(self,nfa_object):
 
-        self.nfa_table=nfa_object.nfa_table()
-        self.nfa_start_state=nfa_object.start_state()
-        self.nfa_end_state=nfa_object.end_state()
-        self.keys=self.change_key_form(nfa_object.keys())
+        self.nfa=nfa_object
+        # self.nfa.nfa_table=nfa_object.nfa.nfa_table()()
+        # self.nfa.start_state()=nfa_object.start_state()
+        # self.nfa.end_state()=nfa_object.end_state()
+        self.keys=self.change_key_form(self.nfa.keys())
         self.__dfa_table=self.nfa_to_dfa()
 
     #function: make nfa keys to dfa keys by removing epsilon
@@ -28,7 +29,7 @@ class DFA:
         e_closure = state
         while not(states_stack.isEmpty()):
             top_ele = states_stack.pop()
-            e_states = self.nfa_table[top_ele]['eps']
+            e_states = self.nfa.nfa_table()[top_ele]['eps']
             if e_states != -1 and isinstance(e_states, list):   # if e_state is list
                 for e_state in e_states:
                     if e_state not in e_closure:
@@ -43,7 +44,7 @@ class DFA:
     #function: make nfa to dfa with Subset construct algorithm
     def nfa_to_dfa(self):
        
-        state0 = self.get_e_closure([self.nfa_start_state])
+        state0 = self.get_e_closure([self.nfa.start_state()])
         unmarked_states = []
         self.all_dfa_states = []
         self.all_dfa_states.append(state0)
@@ -60,7 +61,7 @@ class DFA:
             for key in self.keys:
                 lst_for_e_closure = []
                 for state in unmarked_state:
-                    value = self.nfa_table[state][key]
+                    value = self.nfa.nfa_table()[state][key]
                     if value!=-1:
                         if isinstance(value, list):
                             for i in value:
@@ -86,7 +87,7 @@ class DFA:
                 return False
             current_state=self.__dfa_table[current_state][ch]
         final_state=self.all_dfa_states[current_state]
-        if self.nfa_end_state in final_state:
+        if self.nfa.end_state() in final_state:
             return True
         else:
             return False
