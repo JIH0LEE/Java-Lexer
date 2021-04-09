@@ -19,7 +19,8 @@
 # These tokens are used to distinguish them from operators
 
 
-WHITESPACE="( nl | tab | bl ) *"     
+
+WHITESPACE="( nl | tab | bl ) . ( nl | tab | bl ) *"     
 
 DIGIT="("                          
 for i in range(48,58):
