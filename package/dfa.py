@@ -66,23 +66,34 @@ class DFA:
                         else:
                             lst_for_e_closure.append(value)
                 new_state = self.get_e_closure(lst_for_e_closure)
+                if new_state==[]:
+                    new_state=-1
+                    
                 if new_state not in self.all_dfa_states:
-                    self.all_dfa_states.append(new_state)
-                    unmarked_states.append(new_state)
-                    temp_dict=dict()
-                    for i in self.keys:
-                        temp_dict[i]=-1
-                    table_list.append(temp_dict)
-                table_list[state_num][key]= self.all_dfa_states.index(new_state)
+                    if new_state!=-1:
+                        self.all_dfa_states.append(new_state)
+                        unmarked_states.append(new_state)
+                        temp_dict=dict()
+                        for i in self.keys:
+                            temp_dict[i]=-1
+                        table_list.append(temp_dict)
+                if new_state!=-1:
+                    table_list[state_num][key]= self.all_dfa_states.index(new_state)
+                else:
+                    table_list[state_num][key]= -1
+
         return table_list
 
     #function:check is true when final state has end state
+    #If state is empty set return false
     def check(self,input):
         current_state=0
         for ch in input:
             if ch not in self.keys:
                 return False
             current_state=self.__dfa_table[current_state][ch]
+            if current_state==-1:
+                return False
         final_state=self.all_dfa_states[current_state]
         if self.nfa.end_state() in final_state:
             return True
