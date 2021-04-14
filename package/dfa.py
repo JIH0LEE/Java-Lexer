@@ -6,11 +6,11 @@ class DFA:
     def __init__(self,nfa_object):
 
         self.nfa=nfa_object
-        self.keys=self.change_key_form(self.nfa.keys())
-        self.__dfa_table=self.nfa_to_dfa()
+        self.keys=self.__change_key_form(self.nfa.keys())
+        self.__dfa_table=self.__nfa_to_dfa()
 
     #function: make nfa keys to dfa keys by removing epsilon
-    def change_key_form(self,nfa_keys):
+    def __change_key_form(self,nfa_keys):
 
         rt_key=[]
         for i in nfa_keys:
@@ -20,7 +20,7 @@ class DFA:
         return rt_key
         
     #function: get states with epsilon move
-    def get_e_closure(self,state):
+    def __get_e_closure(self,state):
 
         states_stack = StackClass(list(state))
         e_closure = state
@@ -39,9 +39,9 @@ class DFA:
         return e_closure
     
     #function: make nfa to dfa with Subset construct algorithm
-    def nfa_to_dfa(self):
+    def __nfa_to_dfa(self):
        
-        state0 = self.get_e_closure([self.nfa.start_state()])
+        state0 = self.__get_e_closure([self.nfa.start_state()])
         unmarked_states = []
         self.all_dfa_states = []
         self.all_dfa_states.append(state0)
@@ -65,7 +65,7 @@ class DFA:
                                 lst_for_e_closure.append(i)
                         else:
                             lst_for_e_closure.append(value)
-                new_state = self.get_e_closure(lst_for_e_closure)
+                new_state = self.__get_e_closure(lst_for_e_closure)
                 if new_state==[]:
                     new_state=-1
                     

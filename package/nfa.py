@@ -4,7 +4,7 @@ from .regex import make_key
 
 class NFA:
     #function: change infixorder of regular expression to postfix order
-    def infixtopostfix(self,infixexpr):
+    def __infixtopostfix(self,infixexpr):
 
         stack=StackClass()  #stack for operand
         return_lst=[]       #return list of postorder of regular expression (Each symbol is splited into list) 
@@ -44,7 +44,7 @@ class NFA:
     
     
     #function: make keys for nfa
-    def make_input_symbol(self,postfix):
+    def __make_inpit_symbol(self,postfix):
         op_lst=['.','*','|']
         input_symbol_lst=[]
         for symbol in postfix:  
@@ -58,7 +58,7 @@ class NFA:
 
 
     #function: make postorder of regularexpression to nfa table 
-    def regex_to_nfa(self):
+    def __regex_to_nfa(self):
         table=[]        #idx of this list is state number and each have dictionary whose keys are route for other state.
                         #([{key1:state3,key2:state},{key1:state1,..}...])       
         
@@ -156,10 +156,10 @@ class NFA:
         return table_list
        
     def __init__(self,regex):
-        postfix = self.infixtopostfix(regex)
+        postfix = self.__infixtopostfix(regex)
         self.__regex=postfix
-        self.__keys=self.make_input_symbol(postfix)
-        self.__nfa_table=self.regex_to_nfa()
+        self.__keys=self.__make_inpit_symbol(postfix)
+        self.__nfa_table=self.__regex_to_nfa()
 
     def keys(self):
         return self.__keys

@@ -1,5 +1,4 @@
 import sys
-from package import *
 from package.dfa_object import *
 
 
@@ -107,9 +106,14 @@ def lex(input_str):
         rt_token['name']='CHARACTER'
         rt_token['value']=input_str
         return rt_token
+    if COMMA_dfa.check(input_str):
+        rt_token['name']='COMMA'
+        rt_token['value']=input_str
+        return rt_token    
     else:
         return None
 
+#print output in file
 def print_token(token_list,file):
 
     for elem in token_list:
@@ -127,6 +131,7 @@ if __name__ == "__main__":
 		# 2. Add the most recent return token from lexer(). 
 		# 3. Then restart to make new token.
 		# 4. If the file is read to the end and there is no suitalbe token, an error ocuurs.
+
 
     file_name=sys.argv[1]
     try:
@@ -152,7 +157,7 @@ if __name__ == "__main__":
         else:
             if token_to_add ==None:
                 if(i==len(data)-1):
-                    print('err')
+                    sys.exit('Error!!  Invalid token value:'+token_str)
                 continue   
             else: 
                 token_lst.append(token_to_add)
