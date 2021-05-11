@@ -7,6 +7,7 @@ class DFA:
 
         self.nfa=nfa_object
         self.keys=self.__change_key_form(self.nfa.keys())
+        self.__make_e_closure_each_State()
         self.__dfa_table=self.__nfa_to_dfa()
 
     #function: make nfa keys to dfa keys by removing epsilon
@@ -19,29 +20,49 @@ class DFA:
         
         return rt_key
         
+
+    def __make_e_closure_each_State(self):
+        self.__e_closure=list()
+        for i in range(0,self.nfa.end_state()+1):
+            self.__e_closure.append(set())
+        for i in range(0,self.nfa.end_state()+1):
+            e_closure=set()
+            checked=set()
+            e_closure.add(i)
+            while True:
+                temp=e_closure-checked
+                for j in temp:
+
+                    if self.nfa.nfa_table()[j]['eps'] !=-1:
+                        if not isinstance(self.nfa.nfa_table()[j]['eps'],list):
+                            e_closure=e_closure | set([self.nfa.nfa_table()[j]['eps']])
+                        else:
+                            e_closure=e_closure | set(self.nfa.nfa_table()[j]['eps'])
+                    checked.add(j)
+
+                if e_closure==checked:
+                    break
+
+            self.__e_closure[i]=set(sorted(list(e_closure)))
+
+        return self.__e_closure
     #function: get states with epsilon move
     def __get_e_closure(self,state):
 
         states_stack = StackClass(list(state))
-        e_closure = state
+        e_closure =set()
         while not(states_stack.isEmpty()):
             top_ele = states_stack.pop()
-            e_states = self.nfa.nfa_table()[top_ele]['eps']
-            if e_states != -1 and isinstance(e_states, list):   # if e_state is list
-                for e_state in e_states:
-                    if e_state not in e_closure:
-                        e_closure.append(e_state)
-                        states_stack.push(e_state)
-            elif e_states!=-1:
-                if e_states not in e_closure:
-                    e_closure.append(e_states)
-                    states_stack.push(e_states)
-        return e_closure
+
+            e_closure=e_closure|self.__e_closure[top_ele]
+        return list(e_closure)
+
     
-    #function: make nfa to dfa with Subset construct algorithm
+    # #function: make nfa to dfa with Subset construct algorithm
     def __nfa_to_dfa(self):
-       
-        state0 = self.__get_e_closure([self.nfa.start_state()])
+        
+        # state0 = self.__get_e_closure([self.nfa.start_state()])
+        state0 = self.__e_closure[self.nfa.start_state()]
         unmarked_states = []
         self.all_dfa_states = []
         self.all_dfa_states.append(state0)

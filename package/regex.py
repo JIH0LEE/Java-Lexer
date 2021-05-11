@@ -39,17 +39,6 @@ for i in range(65,91):
         LETTER+=" "+ chr(i)+" |"
         LETTER+=" "+ chr(i+32)
 LETTER+=" )"
-
-TERMINAL_SYMBOL="("                
-for i in range(33,40):
-    TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
-for i in range(43,46):
-    TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
-for i in range(47,124):
-    TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
-for i in range(125,127):
-    TERMINAL_SYMBOL+=" "+ chr(i)+ " |"
-TERMINAL_SYMBOL+=" lp | rp | dot | mul_op | bl )"
     
 INT="( i . n . t )"
 
@@ -63,7 +52,7 @@ VTYPE=INT+' | ' +CHAR+' | '+ BOOL + ' | ' + STRING
 
 INTEGER="0 | ( ( - | eps ) . ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ) . ( "+DIGIT+ " ) * )"            
 
-CHARACTER="' . "+TERMINAL_SYMBOL+"  . '"
+CHARACTER="' . ( "+WHITESPACE+" | "+LETTER+" | "+ DIGIT+" )  . '"
 
 BOOLEAN="( t . r . u . e ) | ( f . a . l . s . e )"
 

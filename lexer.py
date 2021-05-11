@@ -132,7 +132,7 @@ if __name__ == "__main__":
 		# 3. Then restart to make new token.
 		# 4. If the file is read to the end and there is no suitalbe token, an error ocuurs.
 
-    print('123')
+
     file_name=sys.argv[1]
     try:
         readfile=open(file_name,'r')
