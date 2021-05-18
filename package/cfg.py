@@ -1,4 +1,4 @@
-CFG=[
+cfg=[
 "CODE' -> CODE",
 "CODE -> VDECL CODE", 
 "CODE -> FDECL CODE", 
