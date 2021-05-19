@@ -6,3 +6,5 @@ for ele in data:
     ele=ele.strip().lstrip('<').rstrip('>').split(',')
     ele[0]=ele[0].lower()
     token_table.append(ele)
+
+print(token_table)
