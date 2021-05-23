@@ -18,7 +18,7 @@ def lex(input_str):
         rt_token['value']=input_str
         return rt_token
     if BOOLEAN_dfa.check(input_str):
-        rt_token['name']='BOOLEAN'
+        rt_token['name']='BOOLSTR'
         rt_token['value']=input_str
         return rt_token
     if WHILE_dfa.check(input_str):
@@ -42,7 +42,7 @@ def lex(input_str):
         rt_token['value']=input_str
         return rt_token
     if SEMI_COLON_dfa.check(input_str):
-        rt_token['name']='SEMICOLON'
+        rt_token['name']='SEMI'
         rt_token['value']=input_str
         return rt_token 
     if LPAREN_dfa.check(input_str):
@@ -71,7 +71,7 @@ def lex(input_str):
         return rt_token 
 
     if COM_OP_dfa.check(input_str):
-        rt_token['name']='COM_OP'
+        rt_token['name']='COMP'
         rt_token['value']=input_str
         return rt_token 
     if ASSIGN_dfa.check(input_str):
@@ -95,7 +95,7 @@ def lex(input_str):
     if INTEGER_dfa.check(input_str):
         if input_str[0]=='-' and token_lst[-1]['name'] in ['RPAREN','ID','INTEGER','RBRACKET','RBRACE']:
             return None
-        rt_token['name']='INTEGER'
+        rt_token['name']='NUM'
         rt_token['value']=input_str
         return rt_token
     if STRING_LITERAL_dfa.check(input_str):

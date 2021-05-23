@@ -41,7 +41,7 @@ cfg=[
 "ODECL -> ''"
 # CODE' -> CODE
 # CODE -> VDECL CODE 
-# CODE -> FDECL CODE 
+# CODE -> FDECL CODE    
 # CODE -> CDECL CODE
 # CODE -> ''
 # VDECL -> vtype id semi 

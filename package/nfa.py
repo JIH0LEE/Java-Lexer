@@ -121,7 +121,7 @@ class NFA:
             #connect 2 tables and new states with epsilon
 
             else:
-                state_num=state_num+1
+                state_num=state_num+1   
                 new_state1=state_num
                 state_num=state_num+1
                 new_state2=state_num

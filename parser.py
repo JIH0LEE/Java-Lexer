@@ -1,5 +1,10 @@
-from table.slr_table import slr_table;
 from package.stackclass import StackClass
+from package.cfg import cfg
+import pandas as pd
+
+table = pd.read_html('./table/table.html', header=2, encoding='utf-8')
+del table[0]['State']
+slr_table=table[0].transpose()
 class Cfg():
     def __init__(self,rule_string):
         self.lhs,self.rhs=rule_string.split('->')
@@ -7,10 +12,14 @@ class Cfg():
         self.rhs=self.rhs.strip()
     def reduce(self,input):
         
-        idx=self.rhs.rfind(input)
-        rt=input[0:idx]+self.rhs
-        return rt
-
+        idx=input.rfind(self.rhs)
+       
+        rt=input[0:idx]+self.lhs  
+        print("input:",input,"idx:",idx)
+        return rt,self.lhs
+    def length_of_rhs(self):
+        rt_length=len(self.rhs.split(' '))    
+        return rt_length
 class CfgList():
     def __init__(self,rules):
         self.cfg_rules=[]
@@ -19,6 +28,8 @@ class CfgList():
     def reduce(self,input,rule_num):
         rt=self.cfg_rules[rule_num].reduce(input)
         return rt
+    def length_of_rhs(self,rule_num):
+        return self.cfg_rules[rule_num].length_of_rhs()
 
 class Parser():
     
@@ -27,8 +38,8 @@ class Parser():
         
         self.rf=open(file_name,'r')
         self.token_table=self.make_token_list()
-        self.input_string=self.input_string()
-        self.cfg=CfgList(["test","test1"])
+        self.input_string=self.make_input_string()
+        self.cfg=CfgList(cfg)
         
         
 
@@ -39,15 +50,19 @@ class Parser():
         for ele in data:
             ele=ele.strip().lstrip('<').rstrip('>').split(',')
             ele[0]=ele[0].lower()
-            token_table.append(ele)
+            token_table.append(ele[0])
+        
         return token_table
 
     def make_input_string(self):
         input_string=""
         for ele in self.token_table:
-            input_string+=ele
-        return input_string+'$'
+            input_string=input_string+ele+" "
+        input_string+='$'
+        print(input_string)
+        return input_string
     def next(self,current_state,next_symbol):
+        
         return self.slr_table[current_state][next_symbol]
 
     def check(self):
@@ -56,23 +71,46 @@ class Parser():
         left_string=""
         right_string=self.input_string
         next_symbol=right_string.split(" ",1)[0]
-        next_action=next(current_state,next_symbol)
+        next_action=self.next(current_state,next_symbol)
+        
         while(True):
+            print("action:",next_action)
+            print("left:",left_string)
+            print("right:",right_string)
+            print("stack:",stack.items)
+            next_action=self.next(current_state,next_symbol)
+            print("nextAction:",next_action)
+            print('__________________________')
+            
             if next_action==None:
                 print('error')
+            
             elif next_action[0]=='r':
                 rule_num=int(next_action[1:])
-                stack.pop()
+                length=self.cfg.length_of_rhs(rule_num)
+                for i in range(length):
+                    stack.pop()
                 current_state=stack.peek()
-                left_string=self.cfg.reduce(left_string,rule_num)
-                next_state=next(current_state,left_string)
+
+                left_string,reduced_result=self.cfg.reduce(left_string,rule_num)
+                left_string+=" "
+                print(reduced_result)
+                next_state=self.next(current_state,reduced_result)
                 stack.push(int(next_state))
                 current_state=stack.peek()
                 
             elif next_action[0]=='s':
                 stack.push(int(next_action[1:]))
-                left_string=left_string+right_string.split(' ',1)[0]
-                right_string=right_string.split(' ',1)[1]
+                left_string=left_string+right_string.split(' ',1)[0]+' '
+                
+                if right_string!='$':
+                    right_string=right_string.split(' ',1)[1]
+                else:    
+                    right_string=''               
+                current_state=stack.peek()
+                next_symbol=right_string.split(" ",1)[0]
+               
+
             elif next_action=='acc':
                 print("accept")
                 break
@@ -80,7 +118,9 @@ class Parser():
                 print("table error")
 
 if __name__=='__main__':
-    parse=Parser(slr_table,"test.out")
+    parse=Parser(slr_table,"test.out",cfg)
+    parse.check()
+
 
 
             
