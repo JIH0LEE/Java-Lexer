@@ -37,29 +37,33 @@ class Parser():
         self.slr_table=table
         
         self.rf=open(file_name,'r')
-        self.token_table=self.make_token_list()
+        self.token_table=self.make_token_table()
         self.input_string=self.make_input_string()
         self.cfg=CfgList(cfg)
         
         
 
-    def make_token_list(self):
-        token_table=[]
-        data=self.rf.readlines()
-
+    def make_token_table(self):
         for ele in data:
+            token_input=dict()
             ele=ele.strip().lstrip('<').rstrip('>').split(',')
-            ele[0]=ele[0].lower()
-            token_table.append(ele[0])
-        
-        return token_table
+            ele[1]=ele[1].lower()
+            if ele[1]=='op':
+                if ele[2]=='+' or ele[2]=='-':
+                    ele[0]=='addsub'    
+                else:
+                    ele[0]='muldiv'
+            token_input["line"]=ele[0]
+            token_input["token_name"]=ele[1]
+            token_input["value"]=ele[2]
+            token_table.append(token_input)
+            return token_table
 
     def make_input_string(self):
         input_string=""
         for ele in self.token_table:
-            input_string=input_string+ele+" "
+            input_string=input_string+ele["token_name"]+" "
         input_string+='$'
-        print(input_string)
         return input_string
     def next(self,current_state,next_symbol):
         
@@ -74,13 +78,9 @@ class Parser():
         next_action=self.next(current_state,next_symbol)
         
         while(True):
-            print("action:",next_action)
-            print("left:",left_string)
-            print("right:",right_string)
-            print("stack:",stack.items)
+
             next_action=self.next(current_state,next_symbol)
-            print("nextAction:",next_action)
-            print('__________________________')
+         
             
             if next_action==None:
                 print('error')
@@ -116,6 +116,8 @@ class Parser():
                 break
             else:
                 print("table error")
+        
+        def descriptError():
 
 if __name__=='__main__':
     parse=Parser(slr_table,"test.out",cfg)
@@ -123,7 +125,6 @@ if __name__=='__main__':
 
 
 
-            
 
 
 
