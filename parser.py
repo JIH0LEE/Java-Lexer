@@ -1,6 +1,5 @@
 from package.stackclass import StackClass
 from package.cfg import cfg
-import math
 import pandas as pd
 
 table = pd.read_html('./table/table.html', header=2, encoding='utf-8')
@@ -21,7 +20,7 @@ class Cfg():
         
             rt=input[0:idx]+self.lhs  
         
-        print(rt)
+
         return rt,self.lhs
     def length_of_rhs(self):
         if self.rhs=="''":
@@ -93,10 +92,13 @@ class Parser():
         stack=StackClass([0])
         current_state=stack.peek()
         left_string=""
-        #right_string=self.input_string
+        right_string=self.input_string
+        
         next_symbol=right_string.split(" ",1)[0]
+
+        idx=0
         next_action=self.next(current_state,next_symbol)
-        current_line=0
+       
         while(True):
 
             next_action=self.next(current_state,next_symbol)
@@ -104,11 +106,7 @@ class Parser():
          
           
             try:
-                print("left:",left_string)
-                print("state:",current_state)
-                print("next:",next_symbol)
-                print("action:",next_action)
-                print()
+     
                 if next_action[0]=='r':
                     rule_num=int(next_action[1:])
                     length=self.cfg.length_of_rhs(rule_num)
@@ -118,7 +116,9 @@ class Parser():
                     
                     left_string,reduced_result=self.cfg.reduce(left_string,rule_num)
                     left_string+=" "  
+                    
                     next_state=self.next(current_state,reduced_result)
+                  
                     stack.push(int(next_state))
                     current_state=stack.peek()
                     
@@ -132,8 +132,10 @@ class Parser():
                     else:    
                         right_string=''               
                     current_state=stack.peek()
+                    idx+=1
                     next_symbol=right_string.split(" ",1)[0]
-                
+
+                    
 
                 elif next_action=='acc':
                     print("accept")
@@ -141,8 +143,8 @@ class Parser():
                 else:
                     print("table error")
             except:
-                print(next_symbol)
-                print("error")
+                print("Syntax error: '"+self.token_table[idx]["value"]+"' in line",self.token_table[idx]["line"])
+               
                 break
         
         
