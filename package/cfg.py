@@ -31,6 +31,7 @@ cfg=[
 "STMT -> if lparen COND rparen lbrace BLOCK rbrace ELSE", 
 "STMT -> while lparen COND rparen lbrace BLOCK rbrace",
 "COND -> COND comp COND_", 
+"COND -> COND_",
 "COND_ -> boolstr",
 "ELSE -> else lbrace BLOCK rbrace", 
 "ELSE -> ''", 
@@ -71,6 +72,7 @@ cfg=[
 # STMT -> if lparen COND rparen lbrace BLOCK rbrace ELSE 
 # STMT -> while lparen COND rparen lbrace BLOCK rbrace
 # COND -> COND comp COND_ 
+# COND -> COND_
 # COND_ -> boolstr
 # ELSE -> else lbrace BLOCK rbrace 
 # ELSE -> '' 

@@ -1,5 +1,6 @@
 from package.stackclass import StackClass
 from package.cfg import cfg
+import math
 import pandas as pd
 
 table = pd.read_html('./table/table.html', header=2, encoding='utf-8')
@@ -12,14 +13,25 @@ class Cfg():
         self.rhs=self.rhs.strip()
     def reduce(self,input):
         
-        idx=input.rfind(self.rhs)
-       
-        rt=input[0:idx]+self.lhs  
-        print("input:",input,"idx:",idx)
+        if self.rhs=="''":
+          
+            rt=input+self.lhs
+        else:
+            idx=input.rfind(self.rhs)
+        
+            rt=input[0:idx]+self.lhs  
+        
+        print(rt)
         return rt,self.lhs
     def length_of_rhs(self):
+        if self.rhs=="''":
+            return 0
         rt_length=len(self.rhs.split(' '))    
         return rt_length
+
+
+
+
 class CfgList():
     def __init__(self,rules):
         self.cfg_rules=[]
@@ -30,6 +42,8 @@ class CfgList():
         return rt
     def length_of_rhs(self,rule_num):
         return self.cfg_rules[rule_num].length_of_rhs()
+
+
 
 class Parser():
     
@@ -44,7 +58,12 @@ class Parser():
         
 
     def make_token_table(self):
+       
+        token_table=[]
+        data=self.rf.readlines()
+       
         for ele in data:
+            
             token_input=dict()
             ele=ele.strip().lstrip('<').rstrip('>').split(',')
             ele[1]=ele[1].lower()
@@ -57,7 +76,8 @@ class Parser():
             token_input["token_name"]=ele[1]
             token_input["value"]=ele[2]
             token_table.append(token_input)
-            return token_table
+            
+        return token_table
 
     def make_input_string(self):
         input_string=""
@@ -73,51 +93,59 @@ class Parser():
         stack=StackClass([0])
         current_state=stack.peek()
         left_string=""
-        right_string=self.input_string
+        #right_string=self.input_string
         next_symbol=right_string.split(" ",1)[0]
         next_action=self.next(current_state,next_symbol)
-        
+        current_line=0
         while(True):
 
             next_action=self.next(current_state,next_symbol)
          
-            
-            if next_action==None:
-                print('error')
-            
-            elif next_action[0]=='r':
-                rule_num=int(next_action[1:])
-                length=self.cfg.length_of_rhs(rule_num)
-                for i in range(length):
-                    stack.pop()
-                current_state=stack.peek()
-
-                left_string,reduced_result=self.cfg.reduce(left_string,rule_num)
-                left_string+=" "
-                print(reduced_result)
-                next_state=self.next(current_state,reduced_result)
-                stack.push(int(next_state))
-                current_state=stack.peek()
+         
+          
+            try:
+                print("left:",left_string)
+                print("state:",current_state)
+                print("next:",next_symbol)
+                print("action:",next_action)
+                print()
+                if next_action[0]=='r':
+                    rule_num=int(next_action[1:])
+                    length=self.cfg.length_of_rhs(rule_num)
+                    for i in range(length):
+                        stack.pop()
+                    current_state=stack.peek()
+                    
+                    left_string,reduced_result=self.cfg.reduce(left_string,rule_num)
+                    left_string+=" "  
+                    next_state=self.next(current_state,reduced_result)
+                    stack.push(int(next_state))
+                    current_state=stack.peek()
+                    
+                    
+                elif next_action[0]=='s':
+                    stack.push(int(next_action[1:]))
+                    left_string=left_string+right_string.split(' ',1)[0]+' '
+                    
+                    if right_string!='$':
+                        right_string=right_string.split(' ',1)[1]
+                    else:    
+                        right_string=''               
+                    current_state=stack.peek()
+                    next_symbol=right_string.split(" ",1)[0]
                 
-            elif next_action[0]=='s':
-                stack.push(int(next_action[1:]))
-                left_string=left_string+right_string.split(' ',1)[0]+' '
-                
-                if right_string!='$':
-                    right_string=right_string.split(' ',1)[1]
-                else:    
-                    right_string=''               
-                current_state=stack.peek()
-                next_symbol=right_string.split(" ",1)[0]
-               
 
-            elif next_action=='acc':
-                print("accept")
+                elif next_action=='acc':
+                    print("accept")
+                    break
+                else:
+                    print("table error")
+            except:
+                print(next_symbol)
+                print("error")
                 break
-            else:
-                print("table error")
         
-        def descriptError():
+        
 
 if __name__=='__main__':
     parse=Parser(slr_table,"test.out",cfg)
