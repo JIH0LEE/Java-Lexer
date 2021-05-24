@@ -11,14 +11,14 @@ cfg=[
 "RHS -> literal", 
 "RHS -> character", 
 "RHS -> boolstr", 
-"EXPR -> EXPR addsub EXPR_", 
-"EXPR -> EXPR_",
-"EXPR_ -> EXPR_ multdiv EXPR__",
-"EXPR_ -> EXPR__",
-"EXPR__ -> lparen EXPR___ rparen", 
-"EXPR__ -> EXPR___",
-"EXPR___ -> id", 
-"EXPR___ -> num", 
+"EXPR -> EXPR addsub EXPR`", 
+"EXPR -> EXPR`",
+"EXPR` -> EXPR` multdiv EXPR``",
+"EXPR` -> EXPR``",
+"EXPR`` -> lparen EXPR``` rparen", 
+"EXPR`` -> EXPR```",
+"EXPR``` -> id", 
+"EXPR``` -> num", 
 "FDECL -> vtype id lparen ARG rparen lbrace BLOCK RETURN rbrace", 
 "ARG -> vtype id MOREARGS", 
 "ARG -> ''", 
@@ -30,9 +30,9 @@ cfg=[
 "STMT -> ASSIGN semi", 
 "STMT -> if lparen COND rparen lbrace BLOCK rbrace ELSE", 
 "STMT -> while lparen COND rparen lbrace BLOCK rbrace",
-"COND -> COND comp COND_", 
-"COND -> COND_",
-"COND_ -> boolstr",
+"COND -> COND comp COND`", 
+"COND -> COND`",
+"COND` -> boolstr",
 "ELSE -> else lbrace BLOCK rbrace", 
 "ELSE -> ''", 
 "RETURN -> return RHS semi", 
@@ -52,14 +52,14 @@ cfg=[
 # RHS -> literal 
 # RHS -> character 
 # RHS -> boolstr 
-# EXPR -> EXPR addsub EXPR_ 
-# EXPR -> EXPR_
-# EXPR_ -> EXPR_ multdiv EXPR__ 
-# EXPR_ -> EXPR__
-# EXPR__ -> lparen EXPR___ rparen 
-# EXPR__ -> EXPR___
-# EXPR___ -> id 
-# EXPR___ -> num 
+# EXPR -> EXPR addsub EXPR` 
+# EXPR -> EXPR`
+# EXPR` -> EXPR` multdiv EXPR`` 
+# EXPR` -> EXPR```
+# EXPR`` -> lparen EXPR``` rparen 
+# EXPR`` -> EXPR```
+# EXPR``` -> id 
+# EXPR``` -> num 
 # FDECL -> vtype id lparen ARG rparen lbrace BLOCK RETURN rbrace 
 # ARG -> vtype id MOREARGS 
 # ARG -> '' 
@@ -71,9 +71,9 @@ cfg=[
 # STMT -> ASSIGN semi 
 # STMT -> if lparen COND rparen lbrace BLOCK rbrace ELSE 
 # STMT -> while lparen COND rparen lbrace BLOCK rbrace
-# COND -> COND comp COND_ 
-# COND -> COND_
-# COND_ -> boolstr
+# COND -> COND comp COND` 
+# COND -> COND`
+# COND` -> boolstr
 # ELSE -> else lbrace BLOCK rbrace 
 # ELSE -> '' 
 # RETURN -> return RHS semi 

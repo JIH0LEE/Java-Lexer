@@ -10,27 +10,19 @@ class Cfg():
         self.lhs,self.rhs=rule_string.split('->')
         self.lhs=self.lhs.strip()
         self.rhs=self.rhs.strip()
-    def reduce(self,input):
-        
+    def reduce(self,input): 
         if self.rhs=="''":
-          
             rt=input+self.lhs
         else:
-            idx=input.rfind(self.rhs)
-        
+            idx=input.rfind(self.rhs) 
             rt=input[0:idx]+self.lhs  
-        
-
         return rt,self.lhs
     def length_of_rhs(self):
         if self.rhs=="''":
             return 0
         rt_length=len(self.rhs.split(' '))    
         return rt_length
-
-
-
-
+        
 class CfgList():
     def __init__(self,rules):
         self.cfg_rules=[]
@@ -42,20 +34,14 @@ class CfgList():
     def length_of_rhs(self,rule_num):
         return self.cfg_rules[rule_num].length_of_rhs()
 
-
-
 class Parser():
     
     def __init__(self,table,file_name,cfg):
         self.slr_table=table
-        
         self.rf=open(file_name,'r')
         self.token_table=self.make_token_table()
         self.input_string=self.make_input_string()
         self.cfg=CfgList(cfg)
-        
-        
-
     def make_token_table(self):
        
         token_table=[]
@@ -93,18 +79,11 @@ class Parser():
         current_state=stack.peek()
         left_string=""
         right_string=self.input_string
-        
         next_symbol=right_string.split(" ",1)[0]
-
         idx=0
         next_action=self.next(current_state,next_symbol)
-       
         while(True):
-
             next_action=self.next(current_state,next_symbol)
-         
-         
-          
             try:
      
                 if next_action[0]=='r':
@@ -115,10 +94,8 @@ class Parser():
                     current_state=stack.peek()
                     
                     left_string,reduced_result=self.cfg.reduce(left_string,rule_num)
-                    left_string+=" "  
-                    
+                    left_string+=" " 
                     next_state=self.next(current_state,reduced_result)
-                  
                     stack.push(int(next_state))
                     current_state=stack.peek()
                     
@@ -126,7 +103,6 @@ class Parser():
                 elif next_action[0]=='s':
                     stack.push(int(next_action[1:]))
                     left_string=left_string+right_string.split(' ',1)[0]+' '
-                    
                     if right_string!='$':
                         right_string=right_string.split(' ',1)[1]
                     else:    
