@@ -135,7 +135,7 @@ if __name__ == "__main__":
 		# 4. If the file is read to the end and there is no suitalbe token, an error ocuurs.
 
 
-    file_name=sys.argv[1]
+    file_name="./test/"+sys.argv[1]
     try:
         readfile=open(file_name,'r')
     except:
@@ -169,6 +169,6 @@ if __name__ == "__main__":
                     if i== len(data)-1:         
                         token_lst.append(token_to_add)
         line_num+=1
-    writefile=open(file_name.split('.')[0]+".out",'w')
+    writefile=open(sys.argv[1].split('.')[0]+".out",'w')
     print_token(token_lst,writefile)
     writefile.close()   

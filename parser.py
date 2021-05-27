@@ -5,7 +5,11 @@ import pandas as pd
 table = pd.read_html('./table/table.html', header=2, encoding='utf-8')
 del table[0]['State']
 slr_table=table[0].transpose()
+
+
 class Cfg():
+
+
     def __init__(self,rule_string):
         self.lhs,self.rhs=rule_string.split('->')
         self.lhs=self.lhs.strip()
@@ -54,9 +58,11 @@ class Parser():
             ele[1]=ele[1].lower()
             if ele[1]=='op':
                 if ele[2]=='+' or ele[2]=='-':
-                    ele[0]=='addsub'    
+                    ele[1]=='addsub'    
                 else:
-                    ele[0]='muldiv'
+                    ele[1]='muldiv'
+            if ele[1]=='comma':
+                ele[2]=','
             token_input["line"]=ele[0]
             token_input["token_name"]=ele[1]
             token_input["value"]=ele[2]
@@ -126,7 +132,7 @@ class Parser():
         
 
 if __name__=='__main__':
-    parse=Parser(slr_table,"test.out",cfg)
+    parse=Parser(slr_table,"test2.out",cfg)
     parse.check()
 
 

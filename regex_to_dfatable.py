@@ -8,8 +8,7 @@ from package.dfa_object import *
 
 
 if __name__ =="__main__":
-    
-       
+
         dfa=DFA(NFA('( a | b ) *'))
         _data=dfa.table()
         DFA_trans = pd.DataFrame(_data, columns = dfa.getkeys(), index = range(0, len(_data)), dtype = 'object')
