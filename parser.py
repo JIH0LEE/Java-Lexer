@@ -1,42 +1,10 @@
 from package.stackclass import StackClass
-from package.cfg import cfg
+from package.cfg import *
 import pandas as pd
-
+import sys
 table = pd.read_html('./table/table.html', header=2, encoding='utf-8')
 del table[0]['State']
 slr_table=table[0].transpose()
-
-
-class Cfg():
-
-
-    def __init__(self,rule_string):
-        self.lhs,self.rhs=rule_string.split('->')
-        self.lhs=self.lhs.strip()
-        self.rhs=self.rhs.strip()
-    def reduce(self,input): 
-        if self.rhs=="''":
-            rt=input+self.lhs
-        else:
-            idx=input.rfind(self.rhs) 
-            rt=input[0:idx]+self.lhs  
-        return rt,self.lhs
-    def length_of_rhs(self):
-        if self.rhs=="''":
-            return 0
-        rt_length=len(self.rhs.split(' '))    
-        return rt_length
-        
-class CfgList():
-    def __init__(self,rules):
-        self.cfg_rules=[]
-        for ele in rules:
-            self.cfg_rules.append(Cfg(ele))
-    def reduce(self,input,rule_num):
-        rt=self.cfg_rules[rule_num].reduce(input)
-        return rt
-    def length_of_rhs(self,rule_num):
-        return self.cfg_rules[rule_num].length_of_rhs()
 
 class Parser():
     
@@ -132,7 +100,8 @@ class Parser():
         
 
 if __name__=='__main__':
-    parse=Parser(slr_table,"test2.out",cfg)
+    file_name="./test/"+sys.argv[1]
+    parse=Parser(slr_table,file_name,cfg)
     parse.check()
 
 

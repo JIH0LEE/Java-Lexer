@@ -84,3 +84,34 @@ cfg=[
 
     
 ]
+
+class Cfg():
+
+
+    def __init__(self,rule_string):
+        self.lhs,self.rhs=rule_string.split('->')
+        self.lhs=self.lhs.strip()
+        self.rhs=self.rhs.strip()
+    def reduce(self,input): 
+        if self.rhs=="''":
+            rt=input+self.lhs
+        else:
+            idx=input.rfind(self.rhs) 
+            rt=input[0:idx]+self.lhs  
+        return rt,self.lhs
+    def length_of_rhs(self):
+        if self.rhs=="''":
+            return 0
+        rt_length=len(self.rhs.split(' '))    
+        return rt_length
+        
+class CfgList():
+    def __init__(self,rules):
+        self.cfg_rules=[]
+        for ele in rules:
+            self.cfg_rules.append(Cfg(ele))
+    def reduce(self,input,rule_num):
+        rt=self.cfg_rules[rule_num].reduce(input)
+        return rt
+    def length_of_rhs(self,rule_num):
+        return self.cfg_rules[rule_num].length_of_rhs()
