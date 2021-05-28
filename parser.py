@@ -1,7 +1,10 @@
 from module.stackclass import StackClass
 from module.cfg import *
 import pandas as pd
+import math
 import sys
+
+#making slr_table
 table = pd.read_html('./table/table.html', header=2, encoding='utf-8')
 del table[0]['State']
 slr_table=table[0].transpose()
@@ -32,9 +35,9 @@ class Parser():
             ele[1]=ele[1].lower()
             if ele[1]=='op':
                 if ele[2]=='+' or ele[2]=='-':
-                    ele[1]=='addsub'    
+                    ele[1]='addsub'    
                 else:
-                    ele[1]='muldiv'
+                    ele[1]='multdiv'
             if ele[1]=='comma':
                 ele[2]=','
             token_input["line"]=ele[0]
@@ -69,7 +72,9 @@ class Parser():
         while(True):
             next_action=self.next(current_state,next_symbol)
             try:
-     
+                
+                
+                #reduce
                 if next_action[0]=='r':
                     rule_num=int(next_action[1:])
                     length=self.cfg.length_of_rhs(rule_num)
@@ -78,10 +83,12 @@ class Parser():
                     current_state=stack.peek()
                     left_string,reduced_result=self.cfg.reduce(left_string,rule_num)
                     left_string+=" " 
+                    #goto
                     next_state=self.next(current_state,reduced_result)
                     stack.push(int(next_state))
                     current_state=stack.peek()
-                    
+
+                #shift      
                 elif next_action[0]=='s':
                     stack.push(int(next_action[1:]))
                     left_string=left_string+right_string.split(' ',1)[0]+' '
@@ -100,13 +107,7 @@ class Parser():
                 else:
                     print("table error")
             except:
-                available_rule,max=self.cfg.find_rule(left_string)
-                available_rule_string=available_rule.get_rule_string()
-                invalid_input=left_string+self.token_table[idx]["token_name"]
                 print("Syntax error: '"+self.token_table[idx]["value"]+"' in line",self.token_table[idx]["line"])
-                print("Acceptable Input: \""+available_rule_string+"\"")
-                print("Current input:\""+invalid_input+"\"")
-                print("\""+invalid_input[max:]+"\" can not be \""+available_rule.rhs[max:].split(' ',1)[0]+"\"")
                 break
         
         

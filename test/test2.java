@@ -1,5 +1,10 @@
-class test{
-    int num=0;
-    char c='1';
-    int age=25;
+String getStatus(int age){
+    String status;
+    if(true){
+        status="old";
+    } 
+    else{
+        status="young";
+    }
+    return status;
 }

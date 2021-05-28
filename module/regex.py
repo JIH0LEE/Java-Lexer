@@ -46,7 +46,7 @@ CHAR="( c . h . a . r )"
 
 BOOL="( b . o . o . l . e . a . n )"
 
-STRING="( s . t . r . i . n . g ) "
+STRING="( S . t . r . i . n . g ) "
 
 VTYPE=INT+' | ' +CHAR+' | '+ BOOL + ' | ' + STRING
 

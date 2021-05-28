@@ -1,6 +1,9 @@
-int name(int num,int num1){
-    if(true,1){
-        int num3=2;
+class Human{
+    String name ="jiho";
+    int age=25;
+    char gender='m';
+
+    int getNumber(){
+        return age;
     }
-    return 'c';
 }

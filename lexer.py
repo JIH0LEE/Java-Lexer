@@ -97,7 +97,7 @@ class Lexer():
             return rt_token
         #by peeking token list, choose '-' is signed integer or minus operator
         if INTEGER_dfa.check(input_str):
-            if input_str[0]=='-' and token_lst[-1]['name'] in ['RPAREN','ID','INTEGER','RBRACKET','RBRACE']:
+            if input_str[0]=='-' and self.token_lst[-1]['name'] in ['RPAREN','ID','INTEGER','RBRACKET','RBRACE']:
                 return None
             rt_token['name']='NUM'
             
@@ -159,7 +159,7 @@ class Lexer():
                 else:
                     if token_to_add ==None:
                         if(i==len(data)-1):
-                            sys.exit('Error!!  Invalid token value:'+token_str+ "in line",line_num)
+                            sys.exit('Lexical Error:'+token_str+ "in line",line_num)
                         continue   
                     else: 
                         self.token_lst.append(token_to_add)

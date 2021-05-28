@@ -1,0 +1,21 @@
+<1,CLASS,class>
+<1,ID,ErrTest>
+<1,LPAREN,(>
+<1,RPAREN,)>
+<1,LBRACE,{>
+<2,VTYPE,String>
+<2,ID,name>
+<2,ASSIGN,=>
+<2,LITERAL," ">
+<3,IF,if>
+<3,LPAREN,(>
+<3,NUM,3>
+<3,COMP,>>
+<3,NUM,2>
+<3,RPAREN,)>
+<3,LBRACE,{>
+<4,ID,name>
+<4,ASSIGN,=>
+<4,LITERAL,"jiho">
+<5,RBRACE,}>
+<7,RBRACE,}>

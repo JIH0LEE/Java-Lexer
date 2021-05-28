@@ -10,12 +10,12 @@ cfg=[
 "RHS -> EXPR", 
 "RHS -> literal", 
 "RHS -> character", 
-"RHS -> boolstr", 
-"EXPR -> lparen EXPR rparen", 
+"RHS -> boolstr",  
 "EXPR -> EXPR addsub EXPR`", 
 "EXPR -> EXPR`",
 "EXPR` -> EXPR` multdiv EXPR``",
 "EXPR` -> EXPR``",
+"EXPR`` -> lparen EXPR rparen",
 "EXPR`` -> id", 
 "EXPR`` -> num", 
 "FDECL -> vtype id lparen ARG rparen lbrace BLOCK RETURN rbrace", 
@@ -51,11 +51,11 @@ cfg=[
 # RHS -> literal 
 # RHS -> character 
 # RHS -> boolstr 
-# EXPR -> lparen EXPR rparen
 # EXPR -> EXPR addsub EXPR` 
 # EXPR -> EXPR`
 # EXPR` -> EXPR` multdiv EXPR`` 
 # EXPR` -> EXPR``
+# EXPR`` -> lparen EXPR rparen
 # EXPR`` -> id 
 # EXPR`` -> num 
 # FDECL -> vtype id lparen ARG rparen lbrace BLOCK RETURN rbrace 
@@ -105,17 +105,7 @@ class Cfg():
         rt_length=len(self.rhs.split(' '))    
         return rt_length
     
-    #method:return length of string that is acceptable for given input
-    def get_length_accept(self,input):
-        count=0
-        for i in range(len(self.rhs)):
-            if self.rhs[i]==input[i]:
-                count+=1
-            else :
-                return count
-    
-    def get_rule_string(self):
-        return self.rule_string      
+  
 
 
 # Total CFG      
@@ -133,15 +123,6 @@ class CfgList():
     def length_of_rhs(self,rule_num):
         return self.cfg_rules[rule_num].length_of_rhs()
 
-    def find_rule(self,input):
-        max=0
-        rt_elem=None
-        for ele in self.cfg_rules:
-            temp=ele.get_length_accept(input)
-            if temp>max:
-                max=temp
-                rt_elem=ele
-        return rt_elem,max
     
 
 
