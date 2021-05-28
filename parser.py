@@ -10,10 +10,16 @@ class Parser():
     
     def __init__(self,table,file_name,cfg):
         self.slr_table=table
-        self.rf=open(file_name,'r')
+        try:
+            self.rf=open(file_name,'r')
+        except:
+            sys.stderr.write("No file: %s\n" % file_name)
+            exit(1)
         self.token_table=self.make_token_table()
         self.input_string=self.make_input_string()
         self.cfg=CfgList(cfg)
+
+
     def make_token_table(self):
        
         token_table=[]
@@ -39,16 +45,19 @@ class Parser():
         return token_table
 
     def make_input_string(self):
+
         input_string=""
         for ele in self.token_table:
             input_string=input_string+ele["token_name"]+" "
         input_string+='$'
         return input_string
+
     def next(self,current_state,next_symbol):
-        
+
         return self.slr_table[current_state][next_symbol]
 
     def check(self):
+
         stack=StackClass([0])
         current_state=stack.peek()
         left_string=""
@@ -73,7 +82,6 @@ class Parser():
                     stack.push(int(next_state))
                     current_state=stack.peek()
                     
-                    
                 elif next_action[0]=='s':
                     stack.push(int(next_action[1:]))
                     left_string=left_string+right_string.split(' ',1)[0]+' '
@@ -85,21 +93,26 @@ class Parser():
                     idx+=1
                     next_symbol=right_string.split(" ",1)[0]
 
-                    
-
                 elif next_action=='acc':
                     print("accept")
                     break
+
                 else:
                     print("table error")
             except:
+                available_rule,max=self.cfg.find_rule(left_string)
+                available_rule_string=available_rule.get_rule_string()
+                invalid_input=left_string+self.token_table[idx]["token_name"]
                 print("Syntax error: '"+self.token_table[idx]["value"]+"' in line",self.token_table[idx]["line"])
-               
+                print("Acceptable Input: \""+available_rule_string+"\"")
+                print("Current input:\""+invalid_input+"\"")
+                print("\""+invalid_input[max:]+"\" can not be \""+available_rule.rhs[max:]+"\"")
                 break
         
         
 
 if __name__=='__main__':
+
     file_name="./test/"+sys.argv[1]
     parse=Parser(slr_table,file_name,cfg)
     parse.check()

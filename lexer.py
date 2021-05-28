@@ -103,7 +103,7 @@ class Lexer():
             
             return rt_token
         if STRING_LITERAL_dfa.check(input_str):
-            rt_token['name']='STRING'
+            rt_token['name']='LITERAL'
             
             return rt_token        
         if CHARACTER_dfa.check(input_str):
