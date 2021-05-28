@@ -1,5 +1,5 @@
-from package.stackclass import StackClass
-from package.cfg import *
+from module.stackclass import StackClass
+from module.cfg import *
 import pandas as pd
 import sys
 table = pd.read_html('./table/table.html', header=2, encoding='utf-8')
@@ -8,6 +8,7 @@ slr_table=table[0].transpose()
 
 class Parser():
     
+    #Constructor
     def __init__(self,table,file_name,cfg):
         self.slr_table=table
         try:
@@ -19,9 +20,8 @@ class Parser():
         self.input_string=self.make_input_string()
         self.cfg=CfgList(cfg)
 
-
+    #method: make token table containing token name,value, and line number from output file.
     def make_token_table(self):
-       
         token_table=[]
         data=self.rf.readlines()
        
@@ -44,6 +44,7 @@ class Parser():
             
         return token_table
 
+    #method: make input_string from token_table
     def make_input_string(self):
 
         input_string=""
@@ -52,6 +53,7 @@ class Parser():
         input_string+='$'
         return input_string
 
+    #method: get next action from slr_table
     def next(self,current_state,next_symbol):
 
         return self.slr_table[current_state][next_symbol]
@@ -64,7 +66,6 @@ class Parser():
         right_string=self.input_string
         next_symbol=right_string.split(" ",1)[0]
         idx=0
-        next_action=self.next(current_state,next_symbol)
         while(True):
             next_action=self.next(current_state,next_symbol)
             try:
@@ -75,7 +76,6 @@ class Parser():
                     for i in range(length):
                         stack.pop()
                     current_state=stack.peek()
-                    
                     left_string,reduced_result=self.cfg.reduce(left_string,rule_num)
                     left_string+=" " 
                     next_state=self.next(current_state,reduced_result)
@@ -106,7 +106,7 @@ class Parser():
                 print("Syntax error: '"+self.token_table[idx]["value"]+"' in line",self.token_table[idx]["line"])
                 print("Acceptable Input: \""+available_rule_string+"\"")
                 print("Current input:\""+invalid_input+"\"")
-                print("\""+invalid_input[max:]+"\" can not be \""+available_rule.rhs[max:]+"\"")
+                print("\""+invalid_input[max:]+"\" can not be \""+available_rule.rhs[max:].split(' ',1)[0]+"\"")
                 break
         
         

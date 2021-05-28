@@ -1,5 +1,5 @@
 import sys
-from package.dfa_object import *
+from module.dfa_object import *
 
 class Lexer():
     def __init__(self,file_name):

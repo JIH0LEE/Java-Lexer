@@ -1,8 +1,8 @@
 import sys
 import pandas as pd
 import numpy as np
-from package.regex import *
-from package.dfa_object import *
+from module.regex import *
+from module.dfa_object import *
 
 
 
